@@ -37,7 +37,7 @@ public class SesionInfante implements Serializable {
     private boolean deshabilitarFormulario=true;
     private Nodo ayudante;   
     private String textoVista="Gráfico";
-    
+   ;
     private List listadoInfantes;
     
     private DefaultDiagramModel model;
@@ -61,6 +61,7 @@ public class SesionInfante implements Serializable {
         infante = ayudante.getDato();     
         //Me llena el objeto List para la tabla
         listadoInfantes = listaInfantes.obtenerListaInfantes();
+        
         
         model = new DefaultDiagramModel();
         //Pude tener n flechas
@@ -231,6 +232,12 @@ public class SesionInfante implements Serializable {
         }
     }
     
+    public void invertir()
+    {
+      this.listaInfantes.invertirLista();
+      infante = this.listaInfantes.getCabeza().getDato();
+    }
+    
     public void cambiarVistaInfantes()
     {
         if(textoVista.compareTo("Tabla")==0)
@@ -242,5 +249,12 @@ public class SesionInfante implements Serializable {
             textoVista = "Tabla";
         }
     }
+    
+
+    
+    private void add(ListaSE listaTemporal) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
     
 }

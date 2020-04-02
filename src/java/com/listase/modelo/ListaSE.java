@@ -11,12 +11,13 @@ import java.util.List;
 
 /**
  *
- * @author carloaiza
+ * @author Dennis David Arango
  */
 public class ListaSE implements Serializable{
     private Nodo cabeza;
 
     public ListaSE() {
+   
     }
 
     public Nodo getCabeza() {
@@ -131,5 +132,49 @@ public class ListaSE implements Serializable{
         }
         
     }
+    
+      public void invertirLista()
+    {
+      ListaSE listaTemporal = new ListaSE();
+      if(cabeza != null)
+      {
+          Nodo ayudante = cabeza;
+          while(ayudante !=null)
+          {
+              listaTemporal.adicionarNodoAlInicio(ayudante.getDato());
+              ayudante.getSiguiente();
+          }
+      cabeza = listaTemporal.getCabeza();
+      }
+    }
+    
+      public int contarNiñas()
+      {
+          int contNiñas = 0;
+          Nodo temp = cabeza;
+          if(temp.getSiguiente()!=null)    
+          {
+              while(temp.getDato().getGenero().equals("F"))
+              {
+                  contNiñas +=1;
+              }
+          }
+          return contNiñas;
+      }
+       public int contarNiños()
+      {
+          int contNiños = 0;
+          Nodo temp = cabeza;
+          if(temp.getSiguiente()!=null)    
+          {
+              while(temp.getDato().getGenero().equals("M"))
+              {
+                  contNiños +=1;
+              }
+          }
+          return contNiños;
+      
+      }
+      
     
 }
