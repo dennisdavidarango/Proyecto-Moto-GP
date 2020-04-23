@@ -14,17 +14,17 @@ import java.util.List;
  *
  * @author carloaiza
  */
-public class ListaSE implements Serializable{
-    private Nodo cabeza;
-    
-    public ListaSE() {
+public class ListaDE implements Serializable{
+    private NodoDE cabeza;
+
+    public ListaDE() {
     }
 
-    public Nodo getCabeza() {
+    public NodoDE getCabeza() {
         return cabeza;
     }
 
-    public void setCabeza(Nodo cabeza) {
+    public void setCabeza(NodoDE cabeza) {
         this.cabeza = cabeza;
     }
     
@@ -32,37 +32,39 @@ public class ListaSE implements Serializable{
     {
         if(cabeza ==null)
         {
-            cabeza = new Nodo(corredor);
+            cabeza = new NodoDE(corredor);
         }
         else
         {
             //Lamo a mi ayudante
-            Nodo temp= cabeza;
+            NodoDE temp= cabeza;
             while(temp.getSiguiente()!=null) //Mientras que en siguiente exista algo
             {
                 temp= temp.getSiguiente();
             }
             //temp va estar ubicado en el ultimo nodo
-            temp.setSiguiente(new Nodo(corredor));
-        }
-        
+            temp.setSiguiente(new NodoDE(corredor));
+            temp.getSiguiente().setAnterior(temp);
+            
+        }        
     }
     
     public void adicionarNodoAlInicio(Corredor corredor)
     {
         if(cabeza ==null)
         {
-            cabeza = new Nodo(corredor);
+            cabeza = new NodoDE(corredor);
         }
         else
         {
-            Nodo temp= new Nodo(corredor);
+            NodoDE temp= new NodoDE(corredor);
             temp.setSiguiente(cabeza);
+            cabeza.setAnterior(temp);
             cabeza= temp;
         }
     }
     
-    public short contarNodos()
+       public short contarNodos()
     {
         if(cabeza ==null)
         {
@@ -71,7 +73,7 @@ public class ListaSE implements Serializable{
         else
         {
             //llamar a mi ayudante
-            Nodo temp= cabeza;
+            NodoDE temp= cabeza;
             short cont=1;
             while(temp.getSiguiente()!=null)
             {
@@ -95,7 +97,7 @@ public class ListaSE implements Serializable{
     {
         if(cabeza !=null)
         {
-            Nodo temp= cabeza;            
+            NodoDE temp= cabeza;            
             while(temp!=null)
             {
                 listado += temp.getDato()+"\n";
@@ -121,7 +123,7 @@ public class ListaSE implements Serializable{
     {
         if(cabeza !=null)
         {
-            Nodo temp= cabeza;            
+            NodoDE temp= cabeza;            
             while(temp!=null)
             {
                 //listado += temp.getDato()+"\n";
@@ -138,7 +140,7 @@ public class ListaSE implements Serializable{
         int contador=0;
         if(cabeza !=null)
         {
-            Nodo temp= cabeza;            
+            NodoDE temp= cabeza;            
             while(temp!=null)
             {          
                 //sumaEdades= sumaEdades+ temp.getDato().getEdad();
@@ -158,9 +160,9 @@ public class ListaSE implements Serializable{
         if(cabeza!=null)
         {
             //Crear una lista temporal la cabeza de la lista temporal está vacía
-            ListaSE listaTemporal = new ListaSE();
+            ListaDE listaTemporal = new ListaDE();
             // Llamo un ayudante
-            Nodo temp= cabeza;
+            NodoDE temp= cabeza;
             //Recorro la lista de principio a fin
             while(temp!=null)
             {         
@@ -183,7 +185,7 @@ public class ListaSE implements Serializable{
         else
         {
             //llamar a mi ayudante
-            Nodo temp= cabeza;
+            NodoDE temp= cabeza;
             short cont=0;
             while(temp!=null)
             {
@@ -197,15 +199,7 @@ public class ListaSE implements Serializable{
             return cont;
         }
     }
-    /*
-    Receta para eliminar un niño 
- Primero, preguntar el código del niño que desea eliminar.
-segundo, preguntar si la cabeza tiene algo, si la cabeza 
-es el código a eliminar digo que cabeza=cabeza.siguiente si,no llamó al ayudante 
-    y le digo que recorra la lista preguntando si el que sigue existe, si lo que 
-    hay en el siguiente es lo que se desea eliminar, 
-    le digo al ayudante que en siguiente coloque lo que tiene el siguiente en siguiente 
-*/
+    
     public void eliminarCorredor(short codigo ) throws CorredorExcepcion
     {
         if(cabeza !=null)
@@ -213,17 +207,20 @@ es el código a eliminar digo que cabeza=cabeza.siguiente si,no llamó al ayudan
             if(cabeza.getDato().getCodigo()==codigo)
             {
                 cabeza=cabeza.getSiguiente();
+                cabeza.setAnterior(null);
                 return;
             }
             else
             {
-                Nodo temp=cabeza;
+                NodoDE temp=cabeza;
                 while(temp.getSiguiente()!=null)
                 {
                     if(temp.getSiguiente().getDato().getCodigo()== codigo)
                     {
                         //el que sigue es el que hay que eliminar
                         temp.setSiguiente(temp.getSiguiente().getSiguiente());
+                        if(temp.getSiguiente()!=null)
+                            temp.getSiguiente().setAnterior(temp);
                         return;
                     }
                     temp = temp.getSiguiente();
@@ -235,8 +232,7 @@ es el código a eliminar digo que cabeza=cabeza.siguiente si,no llamó al ayudan
         throw new CorredorExcepcion("La lista de corredores está vacía");
     }
     
-    
-     public Corredor obtenerCorredor(short codigo ) throws CorredorExcepcion
+      public Corredor obtenerCorredor(short codigo ) throws CorredorExcepcion
     {
         if(cabeza !=null)
         {
@@ -246,7 +242,7 @@ es el código a eliminar digo que cabeza=cabeza.siguiente si,no llamó al ayudan
             }
             else
             {
-                Nodo temp=cabeza;
+                NodoDE temp=cabeza;
                 while(temp!=null)
                 {
                     if(temp.getDato().getCodigo()== codigo)
@@ -261,5 +257,6 @@ es el código a eliminar digo que cabeza=cabeza.siguiente si,no llamó al ayudan
         }
         throw new CorredorExcepcion("La lista de corredores está vacía");
     }
+    
     
 }

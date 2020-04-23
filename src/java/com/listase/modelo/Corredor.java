@@ -11,26 +11,25 @@ import java.io.Serializable;
  *
  * @author carloaiza
  */
-public class Infante implements  Serializable{
+public class Corredor implements  Serializable{
     private String nombre; //null
     private short codigo; //0
     private byte edad; //0
-    private String genero;
+    private boolean genero;
+    private String ciudadNacimiento;
+    
 
-   
-    public Infante() {
+    public Corredor() {
         this.edad=1;
-        this.genero = "";
+       
     }    
     
-    public Infante(String nombre, short codigo, byte edad) {
+    public Corredor(String nombre, short codigo, byte edad, boolean genero, String ciudadNacimiento) {
         this.nombre = nombre;
         this.codigo = codigo;
         this.edad = edad;
-    }
-
-    public Infante(String carlitos, short s, byte b, String masculino) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.genero = genero;
+        this.ciudadNacimiento= ciudadNacimiento;
     }
 
     public String getNombre() {
@@ -41,15 +40,6 @@ public class Infante implements  Serializable{
         this.nombre = nombre;
     }
 
-    public String getGenero() {
-        return genero;
-    }
-
-    public void setGenero(String genero) {
-        this.genero = genero;
-    }
-
-  
     public short getCodigo() {
         return codigo;
     }
@@ -66,6 +56,24 @@ public class Infante implements  Serializable{
         this.edad = edad;
     }
 
+    public boolean isGenero() {
+        return genero;
+    }
+
+    public void setGenero(boolean genero) {
+        this.genero = genero;
+    }
+
+    public String getCiudadNacimiento() {
+        return ciudadNacimiento;
+    }
+
+    public void setCiudadNacimiento(String ciudadNacimiento) {
+        this.ciudadNacimiento = ciudadNacimiento;
+    }
+
+    
+    
     @Override
     public String toString() {
        return this.nombre; 
