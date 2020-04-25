@@ -326,12 +326,12 @@ public class SesionCorredor implements Serializable {
             }            
            
             //Pinta las flechas            
-            for(int i=0; i < model.getElements().size() -1; i++)
+           /* for(int i=0; i < model.getElements().size() -1; i++)
             {
                 model.connect(createConnection(model.getElements().get(i).getEndPoints().get(1), 
                         model.getElements().get(i+1).getEndPoints().get(0), "Next"));
             }
-            
+            */
         }
     }
     
@@ -340,31 +340,20 @@ public class SesionCorredor implements Serializable {
                 .getRequestParameterMap().get("elementId");
          
         corredorSeleccionado = Short.valueOf(id.replaceAll("frmCorredor:diagrama-", ""));
+        System.out.println(corredorSeleccionado);
+        
         
     }
 
     public void eliminarCorredor()
     {
-        if(codigoEliminar >0)
-        {
-            //llamo el eliminar de la lista
-            try{
-                listaCorredor.eliminarCorredor(codigoEliminar);
-                irPrimero();
-                JsfUtil.addSuccessMessage("Corredor "+codigoEliminar +" eliminado.");
-            }
-            catch(CorredorExcepcion e)
-            {
-                JsfUtil.addErrorMessage(e.getMessage());
-            }
-        }
-        else
-        {
-            JsfUtil.addErrorMessage("El código a eliminar "+codigoEliminar+ " no es válido");
+        try {
+            listaCorredor.eliminarCorredor(corredorSeleccionado);
+            irPrimero();
+        } catch (CorredorExcepcion ex) {
+           JsfUtil.addErrorMessage(ex.getMessage());
         }
     }
-    
-    
     public void obtenerCorredorDiagrama()
     {
         try {

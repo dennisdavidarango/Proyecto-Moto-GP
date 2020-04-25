@@ -36,7 +36,7 @@ public class ListaSE implements Serializable{
         }
         else
         {
-            //Lamo a mi ayudante
+            //Llamo a mi ayudante
             Nodo temp= cabeza;
             while(temp.getSiguiente()!=null) //Mientras que en siguiente exista algo
             {
