@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="CorredoresCreateDlg" widgetVar="CorredoresCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateCorredoresTitle}">
+            <h:form id="CorredoresCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{corredoresController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateCorredoresLabel_codigo}" for="codigo" />
+                        <p:inputText id="codigo" value="#{corredoresController.selected.codigo}" title="#{bundle.CreateCorredoresTitle_codigo}" required="true" requiredMessage="#{bundle.CreateCorredoresRequiredMessage_codigo}"/>
+                        <p:outputLabel value="#{bundle.CreateCorredoresLabel_nombre}" for="nombre" />
+                        <p:inputText id="nombre" value="#{corredoresController.selected.nombre}" title="#{bundle.CreateCorredoresTitle_nombre}" required="true" requiredMessage="#{bundle.CreateCorredoresRequiredMessage_nombre}"/>
+                        <p:outputLabel value="#{bundle.CreateCorredoresLabel_edad}" for="edad" />
+                        <p:inputText id="edad" value="#{corredoresController.selected.edad}" title="#{bundle.CreateCorredoresTitle_edad}" required="true" requiredMessage="#{bundle.CreateCorredoresRequiredMessage_edad}"/>
+                        <p:outputLabel value="#{bundle.CreateCorredoresLabel_ciudadNacimiento}" for="ciudadNacimiento" />
+                        <p:inputText id="ciudadNacimiento" value="#{corredoresController.selected.ciudadNacimiento}" title="#{bundle.CreateCorredoresTitle_ciudadNacimiento}" required="true" requiredMessage="#{bundle.CreateCorredoresRequiredMessage_ciudadNacimiento}"/>
+                        <p:outputLabel value="#{bundle.CreateCorredoresLabel_genero}" for="genero" />
+                        <p:selectBooleanCheckbox id="genero" value="#{corredoresController.selected.genero}" required="true" requiredMessage="#{bundle.EditCorredoresRequiredMessage_genero}"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{corredoresController.create}" value="#{bundle.Save}" update="display,:CorredoresListForm:datalist,:growl" oncomplete="handleSubmit(args,'CorredoresCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="CorredoresCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>
