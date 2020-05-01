@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  *
- * @author carloaiza
+ * @author JULIMEL
  */
 public class ListaSE implements Serializable{
     private Nodo cabeza;
@@ -262,4 +262,12 @@ es el código a eliminar digo que cabeza=cabeza.siguiente si,no llamó al ayudan
         throw new CorredorExcepcion("La lista de corredores está vacía");
     }
     
+     
+    public void insertarPosicion(){
+        
+    
+    
+    
+    }
+     
 }

@@ -43,7 +43,6 @@
     </ui:define>
         <ui:define name="body">
          <h:form id="frmCorredor">
-            <p:commandButton value="Volver" action="inicio" />
             <p:panel header="#{bundle.listase} corredores - Total corredores #{sesionCorredor.listaCorredor.contarNodos()}">
                 <p:panelGrid columns="2">
                     <p:panel header="Datos Corredor">
@@ -190,7 +189,9 @@
                                     action="#{sesionCorredor.obtenerCorredorDiagrama()}" 
                                     update="panelCorredor"                                    
                                     oncomplete="PF('dlgDatosCorredor').show();" />
-                        <p:menuitem value="Eliminar"/>
+                         <p:menuitem value="Eliminar" update="panelEliminarCorredor"                                    
+                                    action="#{sesionCorredor.obtenerCorredorDiagrama()}"
+                                    oncomplete="PF('dlgEliminarCorredor').show();"/>
                         <p:menuitem value="Enviar al final" update="pnlVista"                                    
                                     action="#{sesionCorredor.enviarAlFinal()}"/>
                         <p:menuitem value="Enviar al inicio" update="pnlVista"                                    
@@ -216,6 +217,23 @@
                     
                 </p:panel>
             </p:dialog> 
+            <p:dialog id="modalEliminarCorredor" header="Eliminar Corredor" widgetVar="dlgEliminarCorredor" 
+                      modal="true" height="100">
+                <p:panel id="panelEliminarCorredor">
+                    <h:panelGrid columns="2">
+                        <h:outputText value="Código:" />
+                        <h:outputText value="#{sesionCorredor.corredorDiagrama.codigo}" />
+                        <h:outputText value="Nombre:" />
+                        <h:outputText value="#{sesionCorredor.corredorDiagrama.nombre}" />
+                        <h:outputText value="Género:" />
+                        <h:outputText rendered="#{sesionCorredor.corredorDiagrama.genero}" value="Masculino" />
+                        <h:outputText rendered="#{!sesionCorredor.corredorDiagrama.genero}" value="Femenino" />
+                    </h:panelGrid>
+                    <p:commandButton value="Aceptar" action="#{sesionCorredor.eliminarCorredor()}" 
+                                     oncomplete="PF('dlgEliminarCorredor').hide();" update="pnlVista"/>
+                    <p:commandButton value="Cancelar" onclick="PF('dlgEliminarCorredor').hide();" />
+                </p:panel>
+            </p:dialog>  
         </h:form>
       </ui:define>
     </ui:composition>
