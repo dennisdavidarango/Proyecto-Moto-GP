@@ -12,11 +12,11 @@
         <style type="text/css">
             .ui-diagram-element {   
                 width:8em; 
-                height:3em;     
-                line-height:8em;
+                height:4em;     
+                line-height:10em;
                 text-align: center;
                 box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
-                border-radius: 4px;
+                border-radius: 1px;
                 border: 1px solid transparent;
                 background:url(../imagenes/moto.png) no-repeat scroll left center transparent;  
                 background-size: 100px 100px;
@@ -128,8 +128,9 @@
                     <p:commandButton value="#{sesionCorredor.textoVista}" 
                                      action="#{sesionCorredor.cambiarVistaCorredor()}"
                                      update="pnlVista"/>
-
+<p:graphicImage url="/imagenes/img2.png" width="120px" alt="Logo" title="Logo" />
                     <p:dataTable rendered="#{sesionCorredor.textoVista=='Gráfico'}"  value="#{sesionCorredor.listadoCorredor}" var="inf">
+                        
                         <p:column>
                             <f:facet name="header">
                                 <p:outputLabel value="Código"/>
@@ -206,7 +207,7 @@
                 </p:panel>
             </p:panel>
             
-            <p:dialog id="modalCorredor" header="Datos Corredor" widgetVar="dlgDatosCorredor" 
+            <p:dialog id="modalCorredor" appendTo="@(body)" header="Datos Corredor" widgetVar="dlgDatosCorredor" 
                       modal="true" height="100">
                 <p:panel id="panelCorredor">
                     <h:panelGrid columns="2">
@@ -225,7 +226,7 @@
             
             
             
-            <p:dialog id="modalEliminarCorredor" header="Eliminar Corredor" widgetVar="dlgEliminarCorredor" 
+            <p:dialog id="modalEliminarCorredor" appendTo="@(body)" header="Eliminar Corredor" widgetVar="dlgEliminarCorredor" 
                       modal="true" height="100">
                 <p:panel id="panelEliminarCorredor">
                     <h:panelGrid columns="2">

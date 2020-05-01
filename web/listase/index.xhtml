@@ -202,7 +202,7 @@
                 </p:panel>
             </p:panel>
             
-            <p:dialog id="modalCorredor" header="Datos Corredor" widgetVar="dlgDatosCorredor" 
+            <p:dialog id="modalCorredor" appendTo="@(body)" header="Datos Corredor" widgetVar="dlgDatosCorredor" 
                       modal="true" height="100">
                 <p:panel id="panelCorredor">
                     <h:panelGrid columns="2">
@@ -217,7 +217,7 @@
                     
                 </p:panel>
             </p:dialog> 
-              <p:dialog id="modalEliminarCorredor" header="Eliminar Corredor" widgetVar="dlgEliminarCorredor" 
+              <p:dialog id="modalEliminarCorredor" appendTo="@(body)" header="Eliminar Corredor" widgetVar="dlgEliminarCorredor" 
                       modal="true" height="100">
                 <p:panel id="panelEliminarCorredor">
                     <h:panelGrid columns="2">
