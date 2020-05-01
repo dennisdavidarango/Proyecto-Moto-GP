@@ -16,7 +16,7 @@ public class Corredor implements  Serializable{
     private short codigo; //0
     private byte edad; //0
     private boolean genero;
-    private String ciudadNacimiento;
+    private String ciudadNacimiento; 
     
 
     public Corredor() {
@@ -24,14 +24,15 @@ public class Corredor implements  Serializable{
        
     }    
     
-    public Corredor(String nombre, short codigo, byte edad, boolean genero, String ciudadNacimiento) {
+    public Corredor(String nombre, short codigo, byte edad, boolean genero, String ciudadNacimiento ) {
         this.nombre = nombre;
         this.codigo = codigo;
         this.edad = edad;
         this.genero = genero;
         this.ciudadNacimiento= ciudadNacimiento;
+        
     }
-
+    
     public String getNombre() {
         return nombre;
     }
