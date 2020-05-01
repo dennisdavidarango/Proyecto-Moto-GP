@@ -3,8 +3,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <h:head>
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/template.xhtml">
+        
+         <ui:define name="encabezado">
         <title>Moto GP</title>
         <style type="text/css">
             .ui-diagram-element {   
@@ -15,7 +18,7 @@
                 box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
                 border-radius: 4px;
                 border: 1px solid transparent;
-                background:url(imagenes/moto.png) no-repeat scroll left center transparent;  
+                background:url(../imagenes/moto.png) no-repeat scroll left center transparent;  
                 background-size: 100px 100px;
                
                 
@@ -38,12 +41,9 @@
                 color: black;
             }
         </style>
-    </h:head>
-    <h:body>
-        <p:growl id="grwlErrores"/>
+        </ui:define>
+        <ui:define name="body">
         <h:form id="frmCorredor">
-   
-            <p:commandButton value="Volver" action="inicio" />
             <p:panel header="Carrera Moto GP - Total Corredores #{sesionCorredor.listaCorredor.contarNodos()}">
                 <p:panelGrid columns="2">
                     <p:panel header="Ingresar Corredor">
@@ -84,13 +84,13 @@
                                 <f:selectItem itemLabel="NO" itemValue="0"/>
                             </p:selectOneMenu>
                         </p:panelGrid>
-                        <p:commandButton value="Guardar" update="frmCorredor,:grwlErrores"
+                        <p:commandButton value="Guardar" update="frmCorredor,:growl"
                                          action="#{sesionCorredor.guardarCorredor()}" disabled="#{sesionCorredor.deshabilitarFormulario}"/>
 
                         <p:commandButton value="Nuevo" update="frmCorredor" action="#{sesionCorredor.habilitarFormulario()}"
                                          disabled="#{!sesionCorredor.deshabilitarFormulario}"
                                          />
-                        <p:commandButton value="Invertir"  update="frmCorredor,:grwlErrores"
+                        <p:commandButton value="Invertir"  update="frmCorredor,:growl"
                                          action="#{sesionCorredor.invertirLista()}"
                                          />
                         <p:panelGrid columns="3">
@@ -105,7 +105,7 @@
                         <p:outputLabel value="Código a eliminar: "/>
                         <p:inputText value="#{sesionCorredor.codigoEliminar}" maxlength="4" size="10"/>
                         <p:commandButton value="Eliminar" action="#{sesionCorredor.eliminarCorredor()}" 
-                                         update="frmCorredor,:grwlErrores"
+                                         update="frmCorredor,:growl"
                                          />
                     </p:panel>
                     <p:panel header="Reportes">
@@ -244,8 +244,8 @@
             </p:dialog> 
             
         </h:form>
-
-    </h:body>
+      </ui:define>
+      </ui:composition>
 </html>
 
 
