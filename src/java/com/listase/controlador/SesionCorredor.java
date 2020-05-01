@@ -73,7 +73,7 @@ public class SesionCorredor implements Serializable {
         
         listaCorredor = new ListaSE();        
         //LLenado de la bds
-        listaCorredor.adicionarNodo(new Corredor("Dennis ",(short) 1, (byte)31, true,
+          listaCorredor.adicionarNodo(new Corredor("Dennis ",(short) 1, (byte)31, true,
                 controlLocalidades.getCiudades().get(0).getNombre()));
         listaCorredor.adicionarNodo(new Corredor("David ",(short) 2, (byte)22, true,
         controlLocalidades.getCiudades().get(3).getNombre()));
@@ -354,6 +354,11 @@ public class SesionCorredor implements Serializable {
            JsfUtil.addErrorMessage(ex.getMessage());
         }
     }
+    
+    public void adelantarCorredor(){
+    
+    }
+    
     public void obtenerCorredorDiagrama()
     {
         try {
@@ -394,7 +399,4 @@ public class SesionCorredor implements Serializable {
             JsfUtil.addErrorMessage(ex.getMessage());
         }
     }
-    
-    
-    
 }

@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 /**
  *
- * @author carloaiza
+ * @author JULIMEL
  */
 public class Nodo implements Serializable{
     private Corredor dato;
