@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 /**
  *
- * @author carloaiza
+ * @author JULIMEL
  */
 public class Corredor implements  Serializable{
     private String nombre; //null
@@ -17,6 +17,7 @@ public class Corredor implements  Serializable{
     private byte edad; //0
     private boolean genero;
     private String ciudadNacimiento; 
+    private short posicion; 
     
 
     public Corredor() {
@@ -24,14 +25,24 @@ public class Corredor implements  Serializable{
        
     }    
     
-    public Corredor(String nombre, short codigo, byte edad, boolean genero, String ciudadNacimiento ) {
+    public Corredor(String nombre, short codigo, byte edad, boolean genero, String ciudadNacimiento, short posicion ) {
         this.nombre = nombre;
         this.codigo = codigo;
         this.edad = edad;
         this.genero = genero;
         this.ciudadNacimiento= ciudadNacimiento;
-        
+        this.posicion = posicion;
     }
+
+    public short getPosicion() {
+        return posicion;
+    }
+
+    public void setPosicion(short posicion) {
+        this.posicion = posicion;
+    }
+
+    
     
     public String getNombre() {
         return nombre;

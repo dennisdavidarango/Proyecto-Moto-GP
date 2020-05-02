@@ -16,6 +16,15 @@ import java.util.List;
  */
 public class ListaSE implements Serializable{
     private Nodo cabeza;
+    private Nodo nodoSiguiente;
+
+    public Nodo getNodoSiguiente() {
+        return nodoSiguiente;
+    }
+
+    public void setNodoSiguiente(Nodo nodoSiguiente) {
+        this.nodoSiguiente = nodoSiguiente;
+    }
     
     public ListaSE() {
     }
@@ -46,6 +55,21 @@ public class ListaSE implements Serializable{
             temp.setSiguiente(new Nodo(corredor));
         }
         
+    }
+    
+    public void adicionarNodoEnPosicion(Corredor corredor){
+
+        if(nodoSiguiente ==null)
+            {
+             nodoSiguiente = new Nodo(corredor);
+            }
+         else
+            {
+            Nodo temp= new Nodo(corredor);
+            temp.setSiguiente(nodoSiguiente);
+            nodoSiguiente = temp;
+            }
+    
     }
     
     public void adicionarNodoAlInicio(Corredor corredor)
@@ -235,7 +259,6 @@ es el código a eliminar digo que cabeza=cabeza.siguiente si,no llamó al ayudan
         throw new CorredorExcepcion("La lista de corredores está vacía");
     }
     
-    
      public Corredor obtenerCorredor(short codigo ) throws CorredorExcepcion
     {
         if(cabeza !=null)
@@ -261,5 +284,32 @@ es el código a eliminar digo que cabeza=cabeza.siguiente si,no llamó al ayudan
         }
         throw new CorredorExcepcion("La lista de corredores está vacía");
     }
+
+     public Corredor obtenerPosicion(short posicion ) throws CorredorExcepcion
+    {
+        if(cabeza !=null)
+        {
+            if(cabeza.getDato().getPosicion()==posicion)
+            {                
+                return cabeza.getDato();
+            }
+            else
+            {
+                Nodo temp=cabeza;
+                while(temp!=null)
+                {
+                    if(temp.getDato().getPosicion()== posicion)
+                    {                                                
+                        return temp.getDato();
+                    }
+                    temp = temp.getSiguiente();
+                }
+                
+                throw new CorredorExcepcion("La posición "+ posicion +" no existe en la lista");
+            }
+        }
+        throw new CorredorExcepcion("La posicion de los corredores no se ha cargado");
+    }
+     
    
 }

@@ -73,14 +73,14 @@ public class SesionCorredor implements Serializable {
         
         listaCorredor = new ListaSE();        
         //LLenado de la bds
-          listaCorredor.adicionarNodo(new Corredor("Dennis ",(short) 1, (byte)31, true,
-                controlLocalidades.getCiudades().get(0).getNombre()));
+        listaCorredor.adicionarNodo(new Corredor("Dennis ",(short) 1, (byte)31, true, 
+        controlLocalidades.getCiudades().get(0).getNombre(),(short) 2));
         listaCorredor.adicionarNodo(new Corredor("David ",(short) 2, (byte)22, true,
-        controlLocalidades.getCiudades().get(3).getNombre()));
+        controlLocalidades.getCiudades().get(3).getNombre(),(short) 3 ));
         listaCorredor.adicionarNodo(new Corredor("Carlos ",(short) 3, (byte)20,true,
-        controlLocalidades.getCiudades().get(1).getNombre()));
+        controlLocalidades.getCiudades().get(1).getNombre(),(short) 4));
         listaCorredor.adicionarNodoAlInicio(new Corredor("Lucrecia ",(short) 4, (byte)18,false,
-        controlLocalidades.getCiudades().get(2).getNombre()));
+        controlLocalidades.getCiudades().get(2).getNombre(),(short) 1));
         ayudante = listaCorredor.getCabeza();
         corredor = ayudante.getDato();     
         //Me llena el objeto List para la tabla
@@ -341,8 +341,6 @@ public class SesionCorredor implements Serializable {
          
         corredorSeleccionado = Short.valueOf(id.replaceAll("frmCorredor:diagrama-", ""));
         System.out.println(corredorSeleccionado);
-        
-        
     }
 
     public void eliminarCorredor()
@@ -355,14 +353,19 @@ public class SesionCorredor implements Serializable {
         }
     }
     
-    public void adelantarCorredor(){
-    
-    }
-    
     public void obtenerCorredorDiagrama()
     {
         try {
             corredorDiagrama = listaCorredor.obtenerCorredor(corredorSeleccionado);
+        } catch (CorredorExcepcion ex) {
+            JsfUtil.addErrorMessage(ex.getMessage());
+        }
+    }
+    
+       public void obtenerPosicionDiagrama()
+    {
+        try {
+            corredorDiagrama = listaCorredor.obtenerPosicion(corredorSeleccionado);
         } catch (CorredorExcepcion ex) {
             JsfUtil.addErrorMessage(ex.getMessage());
         }
@@ -384,6 +387,20 @@ public class SesionCorredor implements Serializable {
         }
     }
     
+    public void insertarCorredor(){
+        try
+        {
+           //Buscar el corredor y guardar los datos en una variable temporal
+         Corredor infTemporal = listaCorredor.obtenerCorredor(corredorSeleccionado);
+           // Eliminar el nodo
+         listaCorredor.eliminarCorredor(corredorSeleccionado);  
+           // Adicionarlo en la siguiente posición
+         listaCorredor.adicionarNodoEnPosicion(infTemporal);
+         pintarLista();
+        } catch (CorredorExcepcion ex) {
+            JsfUtil.addErrorMessage(ex.getMessage());
+        }
+    }
     public void enviarAlInicio()
     {
         try {

@@ -72,14 +72,17 @@ public class SesionCorredorDE implements Serializable {
         
         listaCorredores = new ListaDE();        
         //LLenado de la bds
-        listaCorredores.adicionarNodo(new Corredor("Carlitos",(short) 1, (byte)2, true,
-                controlLocalidades.getCiudades().get(0).getNombre()));
-        listaCorredores.adicionarNodo(new Corredor("Juanita",(short) 2, (byte)3, false,
-        controlLocalidades.getCiudades().get(3).getNombre()));
-        listaCorredores.adicionarNodo(new Corredor("Martina",(short) 3, (byte)1,false,
-        controlLocalidades.getCiudades().get(1).getNombre()));
-        listaCorredores.adicionarNodoAlInicio(new Corredor("Mariana",(short) 4, (byte)5,false,
-        controlLocalidades.getCiudades().get(2).getNombre()));
+        listaCorredores.adicionarNodo(new Corredor("Dennis ",(short) 1, (byte)31, true,
+        controlLocalidades.getCiudades().get(0).getNombre(),(short) 2));
+        
+        listaCorredores.adicionarNodo(new Corredor("David ",(short) 2, (byte)22, true,
+        controlLocalidades.getCiudades().get(3).getNombre(),(short) 3));
+        
+        listaCorredores.adicionarNodo(new Corredor("Carlos ",(short) 3, (byte)20,true,
+        controlLocalidades.getCiudades().get(1).getNombre(),(short) 4));
+        
+        listaCorredores.adicionarNodoAlInicio(new Corredor("Lucrecia ",(short) 4, (byte)18,false,
+        controlLocalidades.getCiudades().get(2).getNombre(),(short) 1));
         ayudante = listaCorredores.getCabeza();
         corredor = ayudante.getDato();     
         //Me llena el objeto List para la tabla
