@@ -57,6 +57,12 @@ public class SesionCorredorDE implements Serializable {
     
     private Corredor corredorDiagrama;
     
+    private int posicionCorredor;
+    
+    private String opcionElegida="1";
+    
+    private int numeroPosiciones=1;
+    
     /**
      * Creates a new instance of SesionCorredor
      */
@@ -72,24 +78,51 @@ public class SesionCorredorDE implements Serializable {
         
         listaCorredores = new ListaDE();        
         //LLenado de la bds
-        listaCorredores.adicionarNodo(new Corredor("Dennis ",(short) 1, (byte)31, true,
-        controlLocalidades.getCiudades().get(0).getNombre(),(short) 2));
+       // listaCorredores.adicionarNodo(new Corredor("Dennis ",(short) 1, (byte)31, true,
+      //  controlLocalidades.getCiudades().get(0).getNombre(),(short) 2));
         
-        listaCorredores.adicionarNodo(new Corredor("David ",(short) 2, (byte)22, true,
-        controlLocalidades.getCiudades().get(3).getNombre(),(short) 3));
+     //   listaCorredores.adicionarNodo(new Corredor("David ",(short) 2, (byte)22, true,
+      //  controlLocalidades.getCiudades().get(3).getNombre(),(short) 3));
         
-        listaCorredores.adicionarNodo(new Corredor("Carlos ",(short) 3, (byte)20,true,
-        controlLocalidades.getCiudades().get(1).getNombre(),(short) 4));
+      //  listaCorredores.adicionarNodo(new Corredor("Carlos ",(short) 3, (byte)20,true,
+      //  controlLocalidades.getCiudades().get(1).getNombre(),(short) 4));
         
-        listaCorredores.adicionarNodoAlInicio(new Corredor("Lucrecia ",(short) 4, (byte)18,false,
-        controlLocalidades.getCiudades().get(2).getNombre(),(short) 1));
-        ayudante = listaCorredores.getCabeza();
-        corredor = ayudante.getDato();     
+      //  listaCorredores.adicionarNodoAlInicio(new Corredor("Lucrecia ",(short) 4, (byte)18,false,
+      //  controlLocalidades.getCiudades().get(2).getNombre(),(short) 1));
+       // ayudante = listaCorredores.getCabeza();
+       // corredor = ayudante.getDato();     
         //Me llena el objeto List para la tabla
         listadoCorredores = listaCorredores.obtenerListaCorredores();
         pintarLista();
    }
 
+     public String getOpcionElegida() {
+        return opcionElegida;
+    }
+
+    public void setOpcionElegida(String opcionElegida) {
+        this.opcionElegida = opcionElegida;
+    }
+
+    public int getNumeroPosiciones() {
+        return numeroPosiciones;
+    }
+
+    public void setNumeroPosiciones(int numeroPosiciones) {
+        this.numeroPosiciones = numeroPosiciones;
+    }
+    
+    
+
+    public int getPosicionCorredor() {
+        return posicionCorredor;
+    }
+
+    public void setPosicionCorredor(int posicionCorredor) {
+        this.posicionCorredor = posicionCorredor;
+    }
+    
+    
     public Corredor getCorredorDiagrama() {
         return corredorDiagrama;
     }
@@ -397,7 +430,25 @@ public class SesionCorredorDE implements Serializable {
         }
     }
     
-    public void enviarAlFinal()
+    public void obtenerCorredorMenor()
+    {
+        try {
+            corredorDiagrama = listaCorredores.obtenerCorredorMenorEdad();
+        } catch (CorredorExcepcion ex) {
+            JsfUtil.addErrorMessage(ex.getMessage());
+        }
+    }
+    
+     public void obtenerPosicionCorredor()
+    {
+        try {
+            posicionCorredor = listaCorredores.obtenerPosicionCorredor(corredorSeleccionado);
+        } catch (CorredorExcepcion ex) {
+            JsfUtil.addErrorMessage(ex.getMessage());
+        }
+    }
+
+     public void enviarAlFinal()
     {
         try {
             ///Buscar el corredor y guardar los datos en una variable temporal
@@ -429,5 +480,50 @@ public class SesionCorredorDE implements Serializable {
         }
     }
     
-    
+    public void cambiarPosicion()
+    {
+        boolean bandera=false;
+        int posicionFinal=0;
+        switch(opcionElegida)
+        {
+            //Ganar
+            case "1":
+                if(numeroPosiciones <= (posicionCorredor-1) )
+                {
+                    bandera=true;
+                    posicionFinal = posicionCorredor - numeroPosiciones;
+                }
+                break;
+            //Perder
+            case "0":
+                if(numeroPosiciones <= (listaCorredores.contarNodos()-posicionCorredor))
+                {
+                    bandera=true;
+                    posicionFinal = posicionCorredor + numeroPosiciones;
+                }
+                break;
+        }
+        
+        if(bandera)
+        {
+            try {
+                //Realizaria la función de insertar
+                Corredor datosInfante = listaCorredores.obtenerCorredor(corredorSeleccionado);
+                // cambia la cantidad de infantes
+                listaCorredores.eliminarCorredor(corredorSeleccionado);
+                listaCorredores.adicionarNodoPosicion(posicionFinal, datosInfante);
+                irPrimero();
+                JsfUtil.addSuccessMessage("Se ha realizado el cambio");
+                
+                
+            } catch (CorredorExcepcion ex) {
+               JsfUtil.addErrorMessage(ex.getMessage());
+            }
+            
+        }
+        else
+        {
+            JsfUtil.addErrorMessage("El número de posiciones no es válido para el infante dado");
+        }
+    }   
 }

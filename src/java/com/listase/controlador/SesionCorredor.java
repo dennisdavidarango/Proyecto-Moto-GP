@@ -5,6 +5,8 @@
  */
 package com.listase.controlador;
 
+import com.listaenlazada.controlador.CorredoresFacade;
+import com.listaenlazada.modelo.Corredores;
 import com.listase.excepciones.CorredorExcepcion;
 import com.listase.modelo.Corredor;
 import com.listase.modelo.ListaSE;
@@ -17,6 +19,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import org.primefaces.model.diagram.Connection;
 import org.primefaces.model.diagram.DefaultDiagramModel;
@@ -37,18 +40,25 @@ import org.primefaces.model.diagram.overlay.LabelOverlay;
 @Named(value = "sesionCorredor")
 @SessionScoped
 public class SesionCorredor implements Serializable {
-    private ListaSE listaCorredor;
-    private Corredor corredor;
+    private ListaSE listaCorredores;
+    private Corredores corredor;
     private String alInicio="1";
     private boolean deshabilitarFormulario=true;
     private Nodo ayudante;   
     private String textoVista="Gráfico";
     
-    private List listadoCorredor;
+    private List<Corredores> listadoCorredores;
     
     private DefaultDiagramModel model;
     
     private short codigoEliminar;
+    
+    private int posicionCorredor;
+    
+    private String opcionElegida="1";
+ 
+    private int numeroPosiciones=1;
+    
     
     private ControladorLocalidades controlLocalidades;
     
@@ -56,8 +66,10 @@ public class SesionCorredor implements Serializable {
     
     private short corredorSeleccionado;
     
-    private Corredor corredorDiagrama;
+    private Corredores corredorDiagrama;
     
+    @EJB
+    private CorredoresFacade connCorredores;
     /**
      * Creates a new instance of SesionCorredor
      */
@@ -71,29 +83,74 @@ public class SesionCorredor implements Serializable {
         //inicializando el combo en el primer depto
         codigoDeptoSel = controlLocalidades.getDepartamentos().get(0).getCodigo();
         
-        listaCorredor = new ListaSE();        
+        listaCorredores = new ListaSE(); 
+        
+         listadoCorredores = connCorredores.findAll();
+        //recorrer el listado y envio el infante a laista SE
+        for(Corredores inf:listadoCorredores)
+        {
+            listaCorredores.adicionarNodo(inf);
+        }
+        
         //LLenado de la bds
-        listaCorredor.adicionarNodo(new Corredor("Dennis ",(short) 1, (byte)31, true, 
-        controlLocalidades.getCiudades().get(0).getNombre(),(short) 2));
-        listaCorredor.adicionarNodo(new Corredor("David ",(short) 2, (byte)22, true,
-        controlLocalidades.getCiudades().get(3).getNombre(),(short) 3 ));
-        listaCorredor.adicionarNodo(new Corredor("Carlos ",(short) 3, (byte)20,true,
-        controlLocalidades.getCiudades().get(1).getNombre(),(short) 4));
-        listaCorredor.adicionarNodoAlInicio(new Corredor("Lucrecia ",(short) 4, (byte)18,false,
-        controlLocalidades.getCiudades().get(2).getNombre(),(short) 1));
-        ayudante = listaCorredor.getCabeza();
-        corredor = ayudante.getDato();     
+       // listaCorredor.adicionarNodo(new Corredor("Dennis ",(short) 1, (byte)31, true, 
+       // controlLocalidades.getCiudades().get(0).getNombre(),(short) 2));
+       // listaCorredor.adicionarNodo(new Corredor("David ",(short) 2, (byte)22, true,
+       // controlLocalidades.getCiudades().get(3).getNombre(),(short) 3 ));
+       // listaCorredor.adicionarNodo(new Corredor("Carlos ",(short) 3, (byte)20,true,
+       // controlLocalidades.getCiudades().get(1).getNombre(),(short) 4));
+       // listaCorredor.adicionarNodoAlInicio(new Corredor("Lucrecia ",(short) 4, (byte)18,false,
+       // controlLocalidades.getCiudades().get(2).getNombre(),(short) 1));
+       // ayudante = listaCorredor.getCabeza();
+       // corredor = ayudante.getDato();     
         //Me llena el objeto List para la tabla
-        listadoCorredor = listaCorredor.obtenerListaCorredores();
+       // listadoCorredor = listaCorredor.obtenerListaCorredores();
+       // pintarLista();
+       if(listaCorredores.getCabeza()!=null)
+        {
+            ayudante = listaCorredores.getCabeza();
+            corredor = ayudante.getDato();     
+        }
+        else
+        {
+            corredor = new Corredores();
+        }
+        //Me llena el objeto List para la tabla
+        //listadoInfantes = listaInfantes.obtenerListaInfantes();
         pintarLista();
    }
 
-    public Corredor getCorredorDiagrama() {
+    public Corredores getCorredorDiagrama() {
         return corredorDiagrama;
     }
 
-    public void setCorredorDiagrama(Corredor corredorDiagrama) {
+    public void setCorredorDiagrama(Corredores corredorDiagrama) {
         this.corredorDiagrama = corredorDiagrama;
+    }
+    
+       public int getPosicionCorredor() {
+        return posicionCorredor;
+    }
+
+    public void setPosicionCorredor(int posicionCorredor) {
+        this.posicionCorredor = posicionCorredor;
+    }
+    
+     public int getNumeroPosiciones() {
+        return numeroPosiciones;
+    }
+
+    public void setNumeroPosiciones(int numeroPosiciones) {
+        this.numeroPosiciones = numeroPosiciones;
+    }
+    
+    
+       public String getOpcionElegida() {
+        return opcionElegida;
+    }
+
+    public void setOpcionElegida(String opcionElegida) {
+        this.opcionElegida = opcionElegida;
     }
     
     public short getCorredorSeleccionado() {
@@ -160,11 +217,11 @@ public class SesionCorredor implements Serializable {
     
     
     public List getListadoCorredor() {
-        return listadoCorredor;
+        return listadoCorredores;
     }
 
     public void setListadoCorredor(List listadoCorredor) {
-        this.listadoCorredor = listadoCorredor;
+        this.listadoCorredores = listadoCorredor;
     }
     
     
@@ -190,18 +247,18 @@ public class SesionCorredor implements Serializable {
     }
     
     public ListaSE getListaCorredor() {
-        return listaCorredor;
+        return listaCorredores;
     }
 
     public void setListaCorredor(ListaSE listaCorredor) {
-        this.listaCorredor = listaCorredor;
+        this.listaCorredores = listaCorredor;
     }
 
-    public Corredor getCorredor() {
+    public Corredores getCorredor() {
         return corredor;
     }
 
-    public void setCorredor(Corredor corredor) {
+    public void setCorredor(Corredores corredor) {
         this.corredor = corredor;
     }
     
@@ -210,17 +267,17 @@ public class SesionCorredor implements Serializable {
     public void guardarCorredor()
     {
         //obtiene el consecutivo
-        corredor.setCodigo((short)(listaCorredor.contarNodos()+1));
+        corredor.setCodigo((short)(listaCorredores.contarNodos()+1));
         if(alInicio.compareTo("1")==0)
         {
-            listaCorredor.adicionarNodoAlInicio(corredor);
+            listaCorredores.adicionarNodoAlInicio(corredor);
         }
         else
         {
-            listaCorredor.adicionarNodo(corredor);
+            listaCorredores.adicionarNodo(corredor);
         }  
         //Vuelvo a llenar la lista para la tabla
-        listadoCorredor = listaCorredor.obtenerListaCorredores();
+        listadoCorredores = listaCorredores.obtenerListaCorredores();
         pintarLista();
         deshabilitarFormulario=true;
         JsfUtil.addSuccessMessage("El corredor se ha guardado exitosamente");
@@ -230,7 +287,7 @@ public class SesionCorredor implements Serializable {
     public void habilitarFormulario()
     {
         deshabilitarFormulario=false;
-        corredor = new Corredor();
+        corredor = new Corredores();
     }
     
     public void irSiguiente()
@@ -244,24 +301,24 @@ public class SesionCorredor implements Serializable {
     
     public void irPrimero()
     {
-        if(listaCorredor.getCabeza()!=null)
+        if(listaCorredores.getCabeza()!=null)
         {
-            ayudante = listaCorredor.getCabeza();
+            ayudante = listaCorredores.getCabeza();
             corredor = ayudante.getDato();
             
         }
         else
         {
-            corredor = new Corredor();
+            corredor = new Corredores();
         }
-        listadoCorredor = listaCorredor.obtenerListaCorredores();
+        listadoCorredores = listaCorredores.obtenerListaCorredores();
         pintarLista();
              
     }
     
     public void irUltimo()
     {
-        if(listaCorredor.getCabeza()!=null)
+        if(listaCorredores.getCabeza()!=null)
         {            
             while(ayudante.getSiguiente()!=null)
             {
@@ -285,7 +342,7 @@ public class SesionCorredor implements Serializable {
     
     public void invertirLista(){
         //Invierte la lista
-        listaCorredor.invertirLista();
+        listaCorredores.invertirLista();
         irPrimero();
     }
     
@@ -302,9 +359,9 @@ public class SesionCorredor implements Serializable {
         model.setDefaultConnector(connector);
 
         ///Adicionar los elementos
-        if (listaCorredor.getCabeza() != null) {
+        if (listaCorredores.getCabeza() != null) {
             //llamo a mi ayudante
-            Nodo temp = listaCorredor.getCabeza();
+            Nodo temp = listaCorredores.getCabeza();
             int posX=2;
             int posY=2;
             //recorro la lista de principio a fin
@@ -345,27 +402,41 @@ public class SesionCorredor implements Serializable {
 
     public void eliminarCorredor()
     {
-        try {
-            listaCorredor.eliminarCorredor(corredorSeleccionado);
-            irPrimero();
-        } catch (CorredorExcepcion ex) {
-           JsfUtil.addErrorMessage(ex.getMessage());
+        if(codigoEliminar >0)
+        {
+            //llamo el eliminar de la lista
+            try{
+                connCorredores.remove(listaCorredores.obtenerCorredor(codigoEliminar));
+                listaCorredores.eliminarCorredor(codigoEliminar);
+                //Eliminamos de bds
+                
+                irPrimero();
+                JsfUtil.addSuccessMessage("Infante "+codigoEliminar +" eliminado.");
+            }
+            catch(CorredorExcepcion e)
+            {
+                JsfUtil.addErrorMessage(e.getMessage());
+            }
+        }
+        else
+        {
+            JsfUtil.addErrorMessage("El código a eliminar "+codigoEliminar+ " no es válido");
         }
     }
     
     public void obtenerCorredorDiagrama()
     {
         try {
-            corredorDiagrama = listaCorredor.obtenerCorredor(corredorSeleccionado);
+            corredorDiagrama = listaCorredores.obtenerCorredor(corredorSeleccionado);
         } catch (CorredorExcepcion ex) {
             JsfUtil.addErrorMessage(ex.getMessage());
         }
     }
     
-       public void obtenerPosicionDiagrama()
+    public void obtenerPosicionCorredor()
     {
         try {
-            corredorDiagrama = listaCorredor.obtenerPosicion(corredorSeleccionado);
+            posicionCorredor = listaCorredores.obtenerPosicionCorredor(corredorSeleccionado);
         } catch (CorredorExcepcion ex) {
             JsfUtil.addErrorMessage(ex.getMessage());
         }
@@ -375,41 +446,27 @@ public class SesionCorredor implements Serializable {
     {
         try {
             ///Buscar el corredor y guardar los datos en una variable temporal
-            Corredor infTemporal = listaCorredor.obtenerCorredor(corredorSeleccionado);
+            Corredores infTemporal = listaCorredores.obtenerCorredor(corredorSeleccionado);
             // Eliminar el nodo
-            listaCorredor.eliminarCorredor(corredorSeleccionado);
+            listaCorredores.eliminarCorredor(corredorSeleccionado);
             // Adicionarlo al final
-            listaCorredor.adicionarNodo(infTemporal);
+            listaCorredores.adicionarNodo(infTemporal);
             
             pintarLista();
         } catch (CorredorExcepcion ex) {
             JsfUtil.addErrorMessage(ex.getMessage());
         }
     }
-    
-    public void insertarCorredor(){
-        try
-        {
-           //Buscar el corredor y guardar los datos en una variable temporal
-         Corredor infTemporal = listaCorredor.obtenerCorredor(corredorSeleccionado);
-           // Eliminar el nodo
-         listaCorredor.eliminarCorredor(corredorSeleccionado);  
-           // Adicionarlo en la siguiente posición
-         listaCorredor.adicionarNodoEnPosicion(infTemporal);
-         pintarLista();
-        } catch (CorredorExcepcion ex) {
-            JsfUtil.addErrorMessage(ex.getMessage());
-        }
-    }
+ 
     public void enviarAlInicio()
     {
         try {
             ///Buscar el corredor y guardar los datos en una variable temporal
-            Corredor infTemporal = listaCorredor.obtenerCorredor(corredorSeleccionado);
+            Corredores infTemporal = listaCorredores.obtenerCorredor(corredorSeleccionado);
             // Eliminar el nodo
-            listaCorredor.eliminarCorredor(corredorSeleccionado);
+            listaCorredores.eliminarCorredor(corredorSeleccionado);
             // Adicionarlo al inicio
-            listaCorredor.adicionarNodoAlInicio(infTemporal);
+            listaCorredores.adicionarNodoAlInicio(infTemporal);
             
             pintarLista();
         } catch (CorredorExcepcion ex) {

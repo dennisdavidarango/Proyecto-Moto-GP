@@ -91,21 +91,33 @@
                         <p:commandButton value="Invertir"  update="frmCorredor,:growl"
                                          action="#{sesionCorredor.invertirLista()}"
                                          />
-                        <p:panelGrid columns="3">
-                            <p:commandButton value="Primero" action="#{sesionCorredor.irPrimero()}" 
+                        <p:panelGrid columns="4">
+                            <p:commandButton value="Primero" action="#{sesionCorredorDE.irPrimero()}" 
                                              update="frmCorredor"/>
-                            <p:commandButton value="Siguiente" action="#{sesionCorredor.irSiguiente()}"
+                            <p:commandButton value="Anterior" action="#{sesionCorredorDE.irAnterior()}"
+                                             update="frmCorredor"/>
+                            <p:commandButton value="Siguiente" action="#{sesionCorredorDE.irSiguiente()}"
                                              update="frmCorredor"/>       
-                            <p:commandButton value="Último" action="#{sesionCorredor.irUltimo()}" 
-                                             update="frmCorredor"/>                           
-
+                            <p:commandButton value="Último" action="#{sesionCorredorDE.irUltimo()}" 
+                                             update="frmCorredor"/>    
                         </p:panelGrid>
                         <p:outputLabel value="Código a eliminar: "/>
                         <p:inputText value="#{sesionCorredor.codigoEliminar}" maxlength="4" size="10"/>
                         <p:commandButton value="Eliminar" action="#{sesionCorredor.eliminarCorredor()}" 
                                          update="frmCorredor,:growl"
-                                         />
-                    </p:panel>
+                                         />     
+                     <h:panelGroup>
+                        <p:panel header="Panel contador compartido">
+                             <p:poll interval="3" update="panelContador" />
+                            <h:panelGroup id="panelContador">
+                                <p:outputLabel value="Contador #{appBean.cont}"/>
+                                <p:commandButton 
+                                    rendered="#{appBean.validarTurno(loginBean.usuarioAutenticado.correo)}"
+                                    value="Aumentar" action="#{appBean.aumentarContador(loginBean.usuarioAutenticado.correo)}"
+                                    update="panelContador"    />
+                            </h:panelGroup>
+                        </p:panel>
+                    
                     <p:panel header="Reportes">
                         <p:outputLabel value="Promedio de Edad de los corredores: #{sesionCorredor.listaCorredor.promediarEdades()}"/>
                         <br/>
@@ -118,8 +130,12 @@
                             <p:outputLabel value="#{sesionCorredor.listaCorredor.contarCorredoresxGenero(false)}"/>
                         </h:panelGrid>
                     </p:panel>
-
-
+                        <p:commandButton value="Ver Corredor Menor"                                     
+                                         action="#{sesionCorredorDE.obtenerCorredorMenor()}" 
+                                         update="panelCorredor"                                    
+                                         oncomplete="PF('dlgDatosCorredor').show();" />
+                         </h:panelGroup>    
+                         </p:panel>
                 </p:panelGrid>
 
                 <p:panel header="Gráfico" id="pnlVista" style="width: 100%;">
@@ -188,19 +204,30 @@
                                     action="#{sesionCorredorDE.obtenerCorredorDiagrama()}" 
                                     update="panelCorredor"                                    
                                     oncomplete="PF('dlgDatosCorredor').show();" />
+                        
+                         <p:menuitem value="Ver posición" 
+                                    action="#{sesionCorredorDE.obtenerPosicionCorredor()}"
+                                    update="panelPosicion"                                    
+                                    oncomplete="PF('dlgPosicionCorredor').show();" />
+                         
                         <p:menuitem value="Eliminar" update="panelEliminarCorredor"                                    
                                     action="#{sesionCorredor.obtenerCorredorDiagrama()}"
                                     oncomplete="PF('dlgEliminarCorredor').show();"/>
+                        
                         <p:menuitem value="Enviar al final" update="pnlVista"                                    
                                     action="#{sesionCorredorDE.enviarAlFinal()}"/>
+                        
                         <p:menuitem value="Enviar al inicio" update="pnlVista"                                    
-                                    action="#{sesionCorredorDE.enviarAlInicio()}"                                    
-                                    />
-                        <p:menuitem value="Adelantar/Perder Posición"/>
+                                    action="#{sesionCorredorDE.enviarAlInicio()}" />
+                        
+                        <p:menuitem value="Adelantar/Perder Posición"
+                                    action="#{sesionCorredorDE.obtenerPosicionCorredor()}"
+                                    update="panelGestionPosicion"                                    
+                                    oncomplete="PF('dlgGestionPosicionCorredor').show();"/>
                     </p:contextMenu>
                 </p:panel>
             </p:panel>
-            
+           
             <p:dialog id="modalCorredor" appendTo="@(body)" header="Datos Corredor" widgetVar="dlgDatosCorredor" 
                       modal="true" height="100">
                 <p:panel id="panelCorredor">
@@ -215,6 +242,14 @@
                     </h:panelGrid>
                 </p:panel>
             </p:dialog> 
+            
+              <p:dialog id="posicionCorredor" appendTo="@(body)"  header="Ver posición Corredor" widgetVar="dlgPosicionCorredor"
+                      modal="true" height="50">                          
+               <h:panelGroup id="panelPosicion">
+                   <p:outputLabel value="Posición #{sesionCorredorDE.posicionCorredor}"/>
+               </h:panelGroup>
+            </p:dialog>
+            
              <p:dialog id="modalEliminarCorredor" appendTo="@(body)" header="Eliminar Corredor" widgetVar="dlgEliminarCorredor" 
                       modal="true" height="100">
                 <p:panel id="panelEliminarCorredor">
@@ -232,9 +267,33 @@
                     <p:commandButton value="Cancelar" onclick="PF('dlgEliminarCorredor').hide();" />
                 </p:panel>
             </p:dialog> 
-        </h:form>
-       </ui:define>  
-     </ui:composition>
-</html>
+                    
+           
+                    
+            <p:dialog id="gestionPosicionCorredor" appendTo="@(body)"  header="Adelantar/perder posición Corredor" 
+                      widgetVar="dlgGestionPosicionCorredor"
+                      modal="true" height="150">                          
+                <h:panelGroup id="panelGestionPosicion">
+                    <h:panelGrid columns="2">
+                        <p:outputLabel value="Posición Actual"/>
+                        <p:outputLabel value="#{sesionCorredorDE.posicionCorredor}"/>
+                        <p:outputLabel value="Acción"/>
+                        <p:selectOneMenu value="#{sesionCorredorDE.opcionElegida}">
+                            <f:selectItem itemLabel="Ganar" itemValue="1"/>
+                            <f:selectItem itemLabel="Perder" itemValue="0"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Número posiciones"/>
+                        <p:spinner min="1" value="#{sesionCorredorDE.numeroPosiciones}"/>
+                    </h:panelGrid>
+                    <p:commandButton value="Aplicar" action="#{sesionCorredorDE.cambiarPosicion()}"
+                                     onclick="PF('dlgGestionPosicionCorredor').hide();"
+                                     ajax="false"
+                                      update="pnlVista"/>
+                </h:panelGroup>
+            </p:dialog>
+            </h:form>
+            </ui:define>
+        </ui:composition>
+    </html>
 
 

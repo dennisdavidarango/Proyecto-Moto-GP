@@ -5,6 +5,7 @@
  */
 package com.listase.modelo;
 
+import com.listaenlazada.modelo.Corredores;
 import com.listase.excepciones.CorredorExcepcion;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,16 +17,7 @@ import java.util.List;
  */
 public class ListaSE implements Serializable{
     private Nodo cabeza;
-    private Nodo nodoSiguiente;
 
-    public Nodo getNodoSiguiente() {
-        return nodoSiguiente;
-    }
-
-    public void setNodoSiguiente(Nodo nodoSiguiente) {
-        this.nodoSiguiente = nodoSiguiente;
-    }
-    
     public ListaSE() {
     }
 
@@ -37,7 +29,7 @@ public class ListaSE implements Serializable{
         this.cabeza = cabeza;
     }
     
-    public void adicionarNodo(Corredor corredor)
+    public void adicionarNodo(Corredores corredor)
     {
         if(cabeza ==null)
         {
@@ -57,22 +49,7 @@ public class ListaSE implements Serializable{
         
     }
     
-    public void adicionarNodoEnPosicion(Corredor corredor){
-
-        if(nodoSiguiente ==null)
-            {
-             nodoSiguiente = new Nodo(corredor);
-            }
-         else
-            {
-            Nodo temp= new Nodo(corredor);
-            temp.setSiguiente(nodoSiguiente);
-            nodoSiguiente = temp;
-            }
-    
-    }
-    
-    public void adicionarNodoAlInicio(Corredor corredor)
+    public void adicionarNodoAlInicio(Corredores corredor)
     {
         if(cabeza ==null)
         {
@@ -211,7 +188,7 @@ public class ListaSE implements Serializable{
             short cont=0;
             while(temp!=null)
             {
-                if(temp.getDato().isGenero()==genero)
+                if(temp.getDato().getGenero()==genero)
                 {
                   cont++;   
                 }                
@@ -259,7 +236,7 @@ es el código a eliminar digo que cabeza=cabeza.siguiente si,no llamó al ayudan
         throw new CorredorExcepcion("La lista de corredores está vacía");
     }
     
-     public Corredor obtenerCorredor(short codigo ) throws CorredorExcepcion
+     public Corredores obtenerCorredor(short codigo ) throws CorredorExcepcion
     {
         if(cabeza !=null)
         {
@@ -284,32 +261,21 @@ es el código a eliminar digo que cabeza=cabeza.siguiente si,no llamó al ayudan
         }
         throw new CorredorExcepcion("La lista de corredores está vacía");
     }
-
-     public Corredor obtenerPosicion(short posicion ) throws CorredorExcepcion
-    {
-        if(cabeza !=null)
-        {
-            if(cabeza.getDato().getPosicion()==posicion)
-            {                
-                return cabeza.getDato();
-            }
-            else
-            {
-                Nodo temp=cabeza;
-                while(temp!=null)
-                {
-                    if(temp.getDato().getPosicion()== posicion)
-                    {                                                
-                        return temp.getDato();
-                    }
-                    temp = temp.getSiguiente();
-                }
-                
-                throw new CorredorExcepcion("La posición "+ posicion +" no existe en la lista");
-            }
-        }
-        throw new CorredorExcepcion("La posicion de los corredores no se ha cargado");
-    }
      
-   
+       public int obtenerPosicionCorredor(short codigo) throws CorredorExcepcion {
+        if (cabeza != null) {
+            int cont = 1;
+            Nodo temp = cabeza;
+            while (temp != null) {
+                if (temp.getDato().getCodigo() == codigo) {
+                    return cont;
+                }
+                temp = temp.getSiguiente();
+                cont++;
+            }
+            throw new CorredorExcepcion("El código ingresado no ");
+
+        }
+        throw new CorredorExcepcion("La lista de infantes está vacía");
+    }  
 }

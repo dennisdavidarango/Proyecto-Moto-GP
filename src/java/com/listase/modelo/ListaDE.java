@@ -5,6 +5,7 @@
  */
 package com.listase.modelo;
 
+import com.listaenlazada.modelo.Corredores;
 import com.listase.excepciones.CorredorExcepcion;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -63,6 +64,34 @@ public class ListaDE implements Serializable{
             cabeza= temp;
         }
     }
+    
+       public void adicionarNodoPosicion(int posicion, Corredor dato) throws CorredorExcepcion {
+        if (cabeza != null) {
+            if (posicion == 1) {
+                adicionarNodoAlInicio(dato);               
+            } else {
+                int cont = 1;
+                NodoDE temp = cabeza;
+                while (temp != null) {
+                    if ((posicion - 1) == cont) {
+                        NodoDE nodoInsertar = new NodoDE(dato);
+                        nodoInsertar.setSiguiente(temp.getSiguiente());
+                        temp.setSiguiente(nodoInsertar);
+                        if(nodoInsertar.getSiguiente()!=null)
+                            nodoInsertar.getSiguiente().setAnterior(nodoInsertar);
+                        nodoInsertar.setAnterior(temp);
+                        break ;
+                    }
+                    temp = temp.getSiguiente();
+                    cont++;
+                }
+            }
+        }
+        else{
+            throw new CorredorExcepcion(("La lista está vacía"));
+        }
+    }
+    
     
        public short contarNodos()
     {
@@ -257,6 +286,40 @@ public class ListaDE implements Serializable{
         }
         throw new CorredorExcepcion("La lista de corredores está vacía");
     }
-    
-    
+
+      public Corredor obtenerCorredorMenorEdad() throws CorredorExcepcion {
+        if (cabeza != null) {
+            Corredor menor = cabeza.getDato();
+            NodoDE temp = cabeza;
+            while (temp != null) {
+                if (temp.getDato().getEdad() < menor.getEdad()) {
+                    menor = temp.getDato();
+                }
+                temp = temp.getSiguiente();
+            }
+            return menor;
+        }
+        throw new CorredorExcepcion("La lista de infantes está vacía");
+    }
+     
+       public int obtenerPosicionCorredor(short codigo) throws CorredorExcepcion {
+        if (cabeza != null) {
+            int cont = 1;
+            NodoDE temp = cabeza;
+            while (temp != null) {
+                if (temp.getDato().getCodigo() == codigo) {
+                    return cont;
+                }
+                temp = temp.getSiguiente();
+                cont++;
+            }
+            throw new CorredorExcepcion("El código ingresado no ");
+
+        }
+        throw new CorredorExcepcion("La lista de infantes está vacía");
+    }
+      
+      
+      
+      
 }
