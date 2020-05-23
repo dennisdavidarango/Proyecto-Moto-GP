@@ -5,6 +5,7 @@
  */
 package com.listase.controlador;
 
+import com.listaenlazada.modelo.Corredores;
 import com.listase.excepciones.CorredorExcepcion;
 import com.listase.modelo.Corredor;
 import com.listase.modelo.ListaDE;
@@ -37,7 +38,7 @@ import org.primefaces.model.diagram.overlay.LabelOverlay;
 @SessionScoped
 public class SesionCorredorDE implements Serializable {
     private ListaDE listaCorredores;
-    private Corredor corredor;
+    private Corredores corredor;
     private String alInicio="1";
     private boolean deshabilitarFormulario=true;
     private NodoDE ayudante;   
@@ -55,7 +56,7 @@ public class SesionCorredorDE implements Serializable {
     
     private short corredorSeleccionado;
     
-    private Corredor corredorDiagrama;
+    private Corredores corredorDiagrama;
     
     private int posicionCorredor;
     
@@ -123,11 +124,11 @@ public class SesionCorredorDE implements Serializable {
     }
     
     
-    public Corredor getCorredorDiagrama() {
+    public Corredores getCorredorDiagrama() {
         return corredorDiagrama;
     }
 
-    public void setCorredorDiagrama(Corredor corredorDiagrama) {
+    public void setCorredorDiagrama(Corredores corredorDiagrama) {
         this.corredorDiagrama = corredorDiagrama;
     }
     
@@ -236,11 +237,11 @@ public class SesionCorredorDE implements Serializable {
         this.listaCorredores = listaCorredores;
     }
 
-    public Corredor getCorredor() {
+    public Corredores getCorredor() {
         return corredor;
     }
 
-    public void setCorredor(Corredor corredor) {
+    public void setCorredor(Corredores corredor) {
         this.corredor = corredor;
     }
     
@@ -269,7 +270,7 @@ public class SesionCorredorDE implements Serializable {
     public void habilitarFormulario()
     {
         deshabilitarFormulario=false;
-        corredor = new Corredor();
+        corredor = new Corredores();
     }
     
     public void irAnterior()
@@ -301,7 +302,7 @@ public class SesionCorredorDE implements Serializable {
         }
         else
         {
-            corredor = new Corredor();
+            corredor = new Corredores();
         }
         listadoCorredores = listaCorredores.obtenerListaCorredores();
         pintarLista();
@@ -452,7 +453,7 @@ public class SesionCorredorDE implements Serializable {
     {
         try {
             ///Buscar el corredor y guardar los datos en una variable temporal
-            Corredor infTemporal = listaCorredores.obtenerCorredor(corredorSeleccionado);
+            Corredores infTemporal = listaCorredores.obtenerCorredor(corredorSeleccionado);
             // Eliminar el nodo
             listaCorredores.eliminarCorredor(corredorSeleccionado);
             // Adicionarlo al final
@@ -468,7 +469,7 @@ public class SesionCorredorDE implements Serializable {
     {
         try {
             ///Buscar el corredor y guardar los datos en una variable temporal
-            Corredor infTemporal = listaCorredores.obtenerCorredor(corredorSeleccionado);
+            Corredores infTemporal = listaCorredores.obtenerCorredor(corredorSeleccionado);
             // Eliminar el nodo
             listaCorredores.eliminarCorredor(corredorSeleccionado);
             // Adicionarlo al inicio
@@ -508,7 +509,7 @@ public class SesionCorredorDE implements Serializable {
         {
             try {
                 //Realizaria la función de insertar
-                Corredor datosInfante = listaCorredores.obtenerCorredor(corredorSeleccionado);
+                Corredores datosInfante = listaCorredores.obtenerCorredor(corredorSeleccionado);
                 // cambia la cantidad de infantes
                 listaCorredores.eliminarCorredor(corredorSeleccionado);
                 listaCorredores.adicionarNodoPosicion(posicionFinal, datosInfante);

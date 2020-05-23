@@ -5,24 +5,30 @@
  */
 package com.listase.modelo;
 
+import com.listaenlazada.modelo.Corredores;
+
 /**
  *
  * @author carloaiza
  */
 public class NodoDE {
-    private Corredor dato;
+    private Corredores dato;
     private NodoDE siguiente;
     private NodoDE anterior;
 
-    public NodoDE(Corredor dato) {
+    public NodoDE(Corredores dato) {
         this.dato = dato;
     }
 
-    public Corredor getDato() {
+    NodoDE(Corredor corredor) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public Corredores getDato() {
         return dato;
     }
 
-    public void setDato(Corredor dato) {
+    public void setDato(Corredores dato) {
         this.dato = dato;
     }
 

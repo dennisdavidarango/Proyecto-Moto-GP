@@ -7,7 +7,14 @@ package com.listase.controlador;
 
 import javax.inject.Named;
 import javax.enterprise.context.ApplicationScoped;
-
+import com.listacircularde.modelo.ListaCircularDE;
+import com.listaenlazada.controlador.CorredoresFacade;
+import com.listaenlazada.controlador.util.JsfUtil;
+import com.listaenlazada.modelo.Corredores;
+import com.listase.modelo.NodoDE;
+import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 /**
  *
  * @author carloaiza
@@ -16,15 +23,80 @@ import javax.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class AppBean {
     
-    private String correoTurno="carloaiza@umanizales.edu.co";
-    
+    private String correoTurno="prueba@prueba.com";
     private int cont=0;
+    
+     private List<Corredores> listadoCorredores;
+    @EJB
+    private CorredoresFacade connCorredor;
+    
+    private Corredores corredorSeleccionado;
+    
+    private ListaCircularDE listaCircularCorredores;
+    
+    private NodoDE ayudante;
+    
+    private boolean verInicio=true;
     /**
      * Creates a new instance of AppBean
      */
     public AppBean() {
     }
 
+    @PostConstruct
+        public void inicializar()
+        {
+            listadoCorredores = connCorredor.findAll();
+            listaCircularCorredores = new ListaCircularDE();
+            //recorrer el listado y envio el infante a laista SE
+            for(Corredores inf:listadoCorredores)
+            {
+                listaCircularCorredores.adicionarNodo(inf);
+            }
+        
+            ayudante = listaCircularCorredores.getCabeza();
+            corredorSeleccionado = ayudante.getDato();       
+    }
+    
+    
+    public boolean isVerInicio() {
+        return verInicio;
+    }
+
+    public void setVerInicio(boolean verInicio) {
+        this.verInicio = verInicio;
+    }
+    
+    
+
+    public Corredores getCorredorSeleccionado() {
+        return corredorSeleccionado;
+    }
+
+    public void setCorredorSeleccionado(Corredores corredorSeleccionado) {
+        this.corredorSeleccionado = corredorSeleccionado;
+    }
+
+    public ListaCircularDE getListaCircularCorredores() {
+        return listaCircularCorredores;
+    }
+
+    public void setListaCircularCorredores(ListaCircularDE listaCircularCorredores) {
+        this.listaCircularCorredores = listaCircularCorredores;
+    }
+    
+    
+    public List<Corredores> getListadoCorredores() {
+        return listadoCorredores;
+    }
+
+    public void setListadoInfantes(List<Corredores> listadoInfantes) {
+        this.listadoCorredores = listadoInfantes;
+    }
+
+    
+    
+    
     public int getCont() {
         return cont;
     }
@@ -42,17 +114,25 @@ public class AppBean {
     }
     
     
-    
+      public void pasarTingo()
+    {        
+       if(!verInicio)
+       {
+            ayudante = ayudante.getSiguiente();
+            corredorSeleccionado = ayudante.getDato();
+       }
+       
+    }
     
     public void aumentarContador(String correo)
     {
         switch(correo)
         {
-            case "carloaiza@umanizales.edu.co":
+            case "Prueba@prueba.com":
                 correoTurno= "consulta@umanizales.edu.co";
                 break;
             default:
-                correoTurno= "carloaiza@umanizales.edu.co";
+                correoTurno= "prueba@prueba.com";
         }
         
         cont++;
@@ -67,5 +147,29 @@ public class AppBean {
         return false;
     }
     
+    public void controlarCiclo()
+    {
+        //False fue por que va a parar
+        if(!verInicio)
+        {
+            //Eliminaría el niño . Valido lo seleccionado
+            for(Corredores inf: listadoCorredores)
+            {
+                if(inf.getCodigo() == corredorSeleccionado.getCodigo())
+             
+                    listadoCorredores.remove(inf);
+                    break;
+                }
+            }    
+            
+            if(listadoCorredores.size()==1)
+            {
+                JsfUtil.addSuccessMessage("Ha ganado "+listadoCorredores.get(0));
+            }
+            
+            verInicio = !verInicio;
+        }    
+       
+    }
     
-}
+

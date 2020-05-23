@@ -6,7 +6,7 @@
       xmlns:p="http://primefaces.org/ui">
 
     <h:head>
-        <title><ui:insert name="title">Default Title</ui:insert></title>
+        <title><ui:insert name="title">Inscribir Corredores</ui:insert></title>
         <h:outputStylesheet library="css" name="jsfcrud.css"/>
         <h:outputScript library="js" name="jsfcrud.js"/>
         <ui:insert name="encabezado"/>
@@ -22,7 +22,7 @@
                     <p:menubar>
                         <p:menuitem value="#{bundle.Home}" outcome="/inicioListas" icon="ui-icon-home"/>
                         <p:submenu label="#{bundle.Maintenance}" rendered="#{loginBean.usuarioAutenticado.tipoUsuario.codigo == 1 }">
-                            <p:menuitem value="Corredores" outcome="/corredores/List.xhtml" />
+                            <p:menuitem value="Jugadores" outcome="/corredores/List.xhtml" />
                             <p:menuitem value="TipoUsuario" outcome="/tipoUsuario/List.xhtml" />
                             <p:menuitem value="Usuario" outcome="/usuario/List.xhtml" />
                         </p:submenu>
@@ -37,13 +37,14 @@
                 </h:form>
             </p:layoutUnit>
 
+          
             <p:layoutUnit position="south" size="100">
                 <center>
                 <p:graphicImage url="/imagenes/img.png" width="800px" alt="Logo" title="Logo"/>
                 <ui:insert name="footer"/>
                  </center>
             </p:layoutUnit>
-               
+            
             <p:layoutUnit position="center">
                 <ui:insert name="body"/>
             </p:layoutUnit>

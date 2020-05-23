@@ -29,7 +29,7 @@ public class ListaDE implements Serializable{
         this.cabeza = cabeza;
     }
     
-    public void adicionarNodo(Corredor corredor)
+    public void adicionarNodo(Corredores corredor)
     {
         if(cabeza ==null)
         {
@@ -50,7 +50,7 @@ public class ListaDE implements Serializable{
         }        
     }
     
-    public void adicionarNodoAlInicio(Corredor corredor)
+    public void adicionarNodoAlInicio(Corredores corredor)
     {
         if(cabeza ==null)
         {
@@ -65,7 +65,7 @@ public class ListaDE implements Serializable{
         }
     }
     
-       public void adicionarNodoPosicion(int posicion, Corredor dato) throws CorredorExcepcion {
+       public void adicionarNodoPosicion(int posicion, Corredores dato) throws CorredorExcepcion {
         if (cabeza != null) {
             if (posicion == 1) {
                 adicionarNodoAlInicio(dato);               
@@ -218,7 +218,7 @@ public class ListaDE implements Serializable{
             short cont=0;
             while(temp!=null)
             {
-                if(temp.getDato().isGenero()==genero)
+                if(temp.getDato().getGenero()==genero)
                 {
                   cont++;   
                 }                
@@ -261,7 +261,7 @@ public class ListaDE implements Serializable{
         throw new CorredorExcepcion("La lista de corredores está vacía");
     }
     
-      public Corredor obtenerCorredor(short codigo ) throws CorredorExcepcion
+ public Corredores obtenerCorredor(short codigo ) throws CorredorExcepcion
     {
         if(cabeza !=null)
         {
@@ -286,10 +286,9 @@ public class ListaDE implements Serializable{
         }
         throw new CorredorExcepcion("La lista de corredores está vacía");
     }
-
-      public Corredor obtenerCorredorMenorEdad() throws CorredorExcepcion {
+      public Corredores obtenerCorredorMenorEdad() throws CorredorExcepcion {
         if (cabeza != null) {
-            Corredor menor = cabeza.getDato();
+            Corredores menor = cabeza.getDato();
             NodoDE temp = cabeza;
             while (temp != null) {
                 if (temp.getDato().getEdad() < menor.getEdad()) {
@@ -318,8 +317,6 @@ public class ListaDE implements Serializable{
         }
         throw new CorredorExcepcion("La lista de infantes está vacía");
     }
-      
-      
-      
+
       
 }

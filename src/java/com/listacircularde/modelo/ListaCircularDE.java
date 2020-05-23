@@ -5,6 +5,7 @@
  */
 package com.listacircularde.modelo;
 
+import com.listaenlazada.modelo.Corredores;
 import com.listase.modelo.Corredor;
 import com.listase.excepciones.CorredorExcepcion;
 
@@ -25,7 +26,7 @@ public class ListaCircularDE implements Serializable{
     
     
     
-     public void adicionarNodo(Corredor corredor) {
+     public void adicionarNodo(Corredores corredor) {
         if (cabeza == null) {
             cabeza = new NodoDE(corredor);
             ///Hago los enlaces circulares
@@ -43,8 +44,8 @@ public class ListaCircularDE implements Serializable{
            cabeza.setAnterior(nodoInsertar);
         }
     }
-
-    public void adicionarNodoAlInicio(Corredor corredor) {
+     
+    public void adicionarNodoAlInicio(Corredores corredor) {
         if (cabeza == null) {
              cabeza = new NodoDE(corredor);
             ///Hago los enlaces circulares
