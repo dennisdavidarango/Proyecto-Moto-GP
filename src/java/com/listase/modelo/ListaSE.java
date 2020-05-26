@@ -85,10 +85,8 @@ public class ListaSE implements Serializable{
     
     public String obtenerListadoCorredores()
     {
-        
         //Un método recursivo que recoora mis corredores y que sacando la
         // info la adicione een el string
-        
         return listarCorredores("");
     }
     

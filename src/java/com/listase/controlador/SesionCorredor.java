@@ -374,6 +374,12 @@ public class SesionCorredor implements Serializable {
                         posX+"em", posY+"em");
                 ele.setId(String.valueOf(temp.getDato().getCodigo()));
                 //adiciona un conector al cuadrito
+                if(!temp.getDato().getGenero())
+                {
+                     ele.setStyleClass("ui-diagram-element-mujer");
+                
+                }
+               
                 ele.addEndPoint(new BlankEndPoint(EndPointAnchor.TOP));
                 ele.addEndPoint(new BlankEndPoint(EndPointAnchor.BOTTOM_RIGHT));
                 model.addElement(ele);                    
