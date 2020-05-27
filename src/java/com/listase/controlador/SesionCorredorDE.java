@@ -25,6 +25,7 @@ import org.primefaces.model.diagram.DiagramModel;
 import org.primefaces.model.diagram.Element;
 import org.primefaces.model.diagram.connector.StateMachineConnector;
 import org.primefaces.model.diagram.endpoint.BlankEndPoint;
+import org.primefaces.model.diagram.endpoint.DotEndPoint;
 import org.primefaces.model.diagram.endpoint.EndPoint;
 import org.primefaces.model.diagram.endpoint.EndPointAnchor;
 import org.primefaces.model.diagram.overlay.ArrowOverlay;
@@ -73,31 +74,34 @@ public class SesionCorredorDE implements Serializable {
     @PostConstruct
     private void inicializar()
     {
+        model = new DefaultDiagramModel();
+        model.setMaxConnections(-1);
+        model.setConnectionsDetachable(false);
+        
+        Element elementA = new Element("A", "20em", "6em");
+        elementA.addEndPoint(new DotEndPoint(EndPointAnchor.BOTTOM));
+        
+        Element elementB = new Element("B", "10em", "18em");
+        elementB.addEndPoint(new DotEndPoint(EndPointAnchor.TOP));
+        
+        Element elementC = new Element("C", "40em", "18em");
+        elementC.addEndPoint(new DotEndPoint(EndPointAnchor.TOP));
+        
+        model.addElement(elementA);
+        model.addElement(elementB);
+        model.addElement(elementC);
+        
+        model.connect(new Connection(elementA.getEndPoints().get(0), elementB.getEndPoints().get(0)));        
+        model.connect(new Connection(elementA.getEndPoints().get(0), elementC.getEndPoints().get(0)));
+    
         controlLocalidades = new ControladorLocalidades();
         //inicializando el combo en el primer depto
         codigoDeptoSel = controlLocalidades.getDepartamentos().get(0).getCodigo();
         
-        listaCorredores = new ListaDE();        
-        //LLenado de la bds
-       // listaCorredores.adicionarNodo(new Corredor("Dennis ",(short) 1, (byte)31, true,
-      //  controlLocalidades.getCiudades().get(0).getNombre(),(short) 2));
-        
-     //   listaCorredores.adicionarNodo(new Corredor("David ",(short) 2, (byte)22, true,
-      //  controlLocalidades.getCiudades().get(3).getNombre(),(short) 3));
-        
-      //  listaCorredores.adicionarNodo(new Corredor("Carlos ",(short) 3, (byte)20,true,
-      //  controlLocalidades.getCiudades().get(1).getNombre(),(short) 4));
-        
-      //  listaCorredores.adicionarNodoAlInicio(new Corredor("Lucrecia ",(short) 4, (byte)18,false,
-      //  controlLocalidades.getCiudades().get(2).getNombre(),(short) 1));
-       // ayudante = listaCorredores.getCabeza();
-       // corredor = ayudante.getDato();     
-        //Me llena el objeto List para la tabla
-        listadoCorredores = listaCorredores.obtenerListaCorredores();
-        pintarLista();
+        listaCorredores = new ListaDE();    
    }
 
-     public String getOpcionElegida() {
+    public String getOpcionElegida() {
         return opcionElegida;
     }
 
