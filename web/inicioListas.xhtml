@@ -23,7 +23,7 @@
                                     value="#{loginBean.contrasenia}"/>
                     </p:panelGrid>
                     <p:commandButton value="Ingresar" action="#{loginBean.ingresar()}"
-                                     update=":grwlErrores, pnlLogin"/>
+                                     update=":grwlErrores, pnlLogin" ajax="false"/>
                 </p:panel>
             </h:panelGroup>
         </h:form> 

@@ -78,22 +78,39 @@ public class SesionCorredorDE implements Serializable {
         model.setMaxConnections(-1);
         model.setConnectionsDetachable(false);
         
-        Element elementA = new Element("A", "20em", "6em");
+        Element elementA = new Element("A", "10em", "6em");
         elementA.addEndPoint(new DotEndPoint(EndPointAnchor.BOTTOM));
         
-        Element elementB = new Element("B", "10em", "18em");
-        elementB.addEndPoint(new DotEndPoint(EndPointAnchor.TOP));
+        Element elementB = new Element("B", "20em", "18em");
+        elementB.addEndPoint(new DotEndPoint(EndPointAnchor.RIGHT));
         
-        Element elementC = new Element("C", "40em", "18em");
-        elementC.addEndPoint(new DotEndPoint(EndPointAnchor.TOP));
+        Element elementC = new Element("C", "30em", "18em");
+        elementC.addEndPoint(new DotEndPoint(EndPointAnchor.LEFT));
+        
+        Element elementD = new Element("D", "40em", "18em");
+        elementD.addEndPoint(new DotEndPoint(EndPointAnchor.RIGHT));
+        
+        Element elementE = new Element("E", "50em", "18em");
+        elementE.addEndPoint(new DotEndPoint(EndPointAnchor.LEFT));
+        
+        Element elementF = new Element("F", "60em", "30em");
+        elementF.addEndPoint(new DotEndPoint(EndPointAnchor.AUTO_DEFAULT));
         
         model.addElement(elementA);
         model.addElement(elementB);
         model.addElement(elementC);
+        model.addElement(elementD);
+        model.addElement(elementE);
+        model.addElement(elementF);
         
         model.connect(new Connection(elementA.getEndPoints().get(0), elementB.getEndPoints().get(0)));        
         model.connect(new Connection(elementA.getEndPoints().get(0), elementC.getEndPoints().get(0)));
-    
+        model.connect(new Connection(elementB.getEndPoints().get(0), elementD.getEndPoints().get(0)));
+        model.connect(new Connection(elementC.getEndPoints().get(0), elementE.getEndPoints().get(0)));
+        model.connect(new Connection(elementF.getEndPoints().get(0), elementE.getEndPoints().get(0)));        
+        model.connect(new Connection(elementF.getEndPoints().get(0), elementD.getEndPoints().get(0)));
+       
+        
         controlLocalidades = new ControladorLocalidades();
         //inicializando el combo en el primer depto
         codigoDeptoSel = controlLocalidades.getDepartamentos().get(0).getCodigo();
