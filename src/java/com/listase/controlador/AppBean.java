@@ -15,6 +15,12 @@ import com.listase.modelo.NodoDE;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import org.primefaces.model.diagram.Connection;
+import org.primefaces.model.diagram.DefaultDiagramModel;
+import org.primefaces.model.diagram.DiagramModel;
+import org.primefaces.model.diagram.Element;
+import org.primefaces.model.diagram.endpoint.DotEndPoint;
+import org.primefaces.model.diagram.endpoint.EndPointAnchor;
 /**
  *
  * @author carloaiza
@@ -29,6 +35,8 @@ public class AppBean {
      private List<Corredores> listadoCorredores;
     @EJB
     private CorredoresFacade connCorredor;
+    
+    private DefaultDiagramModel model;
     
     private Corredores corredorSeleccionado;
     
@@ -46,6 +54,43 @@ public class AppBean {
     @PostConstruct
         public void inicializar()
         {
+            model = new DefaultDiagramModel();
+            model.setMaxConnections(-1);
+            model.setConnectionsDetachable(false);
+            
+            Element elementA = new Element("Toma todo", "10em", "6em");
+            elementA.addEndPoint(new DotEndPoint(EndPointAnchor.BOTTOM));
+        
+            Element elementB = new Element("Toma uno", "20em", "18em");
+            elementB.addEndPoint(new DotEndPoint(EndPointAnchor.RIGHT));
+        
+            Element elementC = new Element("Toma dos", "30em", "18em");
+            elementC.addEndPoint(new DotEndPoint(EndPointAnchor.LEFT));
+        
+            Element elementD = new Element("Pon uno", "40em", "18em");
+            elementD.addEndPoint(new DotEndPoint(EndPointAnchor.RIGHT));
+        
+            Element elementE = new Element("Pon dos", "50em", "18em");
+            elementE.addEndPoint(new DotEndPoint(EndPointAnchor.LEFT));
+        
+            Element elementF = new Element("Todos ponen", "60em", "30em");
+            elementF.addEndPoint(new DotEndPoint(EndPointAnchor.ASSIGN));
+        
+            model.addElement(elementA);
+            model.addElement(elementB);
+            model.addElement(elementC);
+            model.addElement(elementD);
+            model.addElement(elementE);
+            model.addElement(elementF);
+        
+            model.connect(new Connection(elementA.getEndPoints().get(0), elementB.getEndPoints().get(0)));        
+            model.connect(new Connection(elementA.getEndPoints().get(0), elementC.getEndPoints().get(0)));
+            model.connect(new Connection(elementB.getEndPoints().get(0), elementD.getEndPoints().get(0)));
+            model.connect(new Connection(elementC.getEndPoints().get(0), elementE.getEndPoints().get(0)));
+            model.connect(new Connection(elementF.getEndPoints().get(0), elementE.getEndPoints().get(0)));        
+            model.connect(new Connection(elementF.getEndPoints().get(0), elementD.getEndPoints().get(0)));
+       
+            
             listadoCorredores = connCorredor.findAll();
             listaCircularCorredores = new ListaCircularDE();
             //recorrer el listado y envio el infante a laista SE
@@ -75,6 +120,10 @@ public class AppBean {
 
     public void setCorredorSeleccionado(Corredores corredorSeleccionado) {
         this.corredorSeleccionado = corredorSeleccionado;
+    }
+    
+     public DiagramModel getModel() {
+        return model;
     }
 
     public ListaCircularDE getListaCircularCorredores() {
@@ -120,6 +169,10 @@ public class AppBean {
        {
             ayudante = ayudante.getSiguiente();
             corredorSeleccionado = ayudante.getDato();
+           // for(Element ele:model.)
+           // {
+            
+           // }
        }
        
     }

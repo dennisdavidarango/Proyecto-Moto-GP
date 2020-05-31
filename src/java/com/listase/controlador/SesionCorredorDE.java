@@ -78,23 +78,23 @@ public class SesionCorredorDE implements Serializable {
         model.setMaxConnections(-1);
         model.setConnectionsDetachable(false);
         
-        Element elementA = new Element("A", "10em", "6em");
+        Element elementA = new Element("Toma todo", "10em", "6em");
         elementA.addEndPoint(new DotEndPoint(EndPointAnchor.BOTTOM));
         
-        Element elementB = new Element("B", "20em", "18em");
+        Element elementB = new Element("Toma uno", "20em", "18em");
         elementB.addEndPoint(new DotEndPoint(EndPointAnchor.RIGHT));
         
-        Element elementC = new Element("C", "30em", "18em");
+        Element elementC = new Element("Toma dos", "30em", "18em");
         elementC.addEndPoint(new DotEndPoint(EndPointAnchor.LEFT));
         
-        Element elementD = new Element("D", "40em", "18em");
+        Element elementD = new Element("Pon uno", "40em", "18em");
         elementD.addEndPoint(new DotEndPoint(EndPointAnchor.RIGHT));
         
-        Element elementE = new Element("E", "50em", "18em");
+        Element elementE = new Element("Pon dos", "50em", "18em");
         elementE.addEndPoint(new DotEndPoint(EndPointAnchor.LEFT));
         
-        Element elementF = new Element("F", "60em", "30em");
-        elementF.addEndPoint(new DotEndPoint(EndPointAnchor.AUTO_DEFAULT));
+        Element elementF = new Element("Todos ponen", "60em", "30em");
+        elementF.addEndPoint(new DotEndPoint(EndPointAnchor.ASSIGN));
         
         model.addElement(elementA);
         model.addElement(elementB);

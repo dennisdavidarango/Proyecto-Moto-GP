@@ -14,6 +14,7 @@
                     height:4em;     
                     line-height:4em;
                     text-align: center;
+                    background-color: black;
                 }
             </style>
  
@@ -23,7 +24,7 @@
     <ui:define name="body">
         <center>
             <h:form>
-                <p:poll  interval="3" listener="#{appBean.pasarTingo()}" update="panelDatos" />                
+                <p:poll  interval="1" listener="#{appBean.pasarTingo()}" update="panelDatos" />                
 
                 <p:panel id="panelTingo" header="Bienvenidos a tingo tango - Total Infantes: #{appBean.listaCircularCorredores.contarNodos()}"  >
                     <p:dataTable  value="#{appBean.listadoCorredores}" var="inf">
@@ -67,6 +68,11 @@
 
                     <p:commandButton value="Parar" disabled="#{appBean.verInicio}"
                                      action="#{appBean.controlarCiclo()}" update="panelBotones,panelTingo"/>
+                    
+                     <p:commandButton  value="Girar Pirinola" update="panelBotones,panelTingo" />
+                     
+                      <p:commandButton  value="Parar Pirinola" update="panelBotones,panelTingo" />
+                      
                 </h:panelGroup>
 
                 <p:panel header="Jugador Seleccionado">
@@ -79,12 +85,15 @@
                         <p:outputLabel value="#{appBean.corredorSeleccionado.edad}"/>                        
                         <p:outputLabel value="Género"/>
                         <p:outputLabel value="#{appBean.corredorSeleccionado.genero}"/>                        
-                        <p:outputLabel value="Cidad Nacimiento"/>
+                        <p:outputLabel value="Ciudad Nacimiento"/>
                         <p:outputLabel value="#{appBean.corredorSeleccionado.ciudadNacimiento}"/>
                     </p:panelGrid>
                 </p:panel>
+                <h:panelGroup>
+                <p:diagram value="#{appBean.model}" style="height:400px" styleClass="ui-widget-content" />
+                </h:panelGroup>
             </h:form>
-            <p:diagram value="#{sesionCorredorDE.model}" style="height:400px" styleClass="ui-widget-content" />
+            
         </center>
     </ui:define>
 

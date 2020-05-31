@@ -17,7 +17,8 @@ import javax.persistence.metamodel.SingularAttribute;
 public class Nodo implements Serializable{
     private Corredores dato;
     private Nodo siguiente;
-
+    private Nodo anterior;
+    
     public Nodo(Corredores dato) {
         this.dato = dato;
     }
@@ -38,5 +39,11 @@ public class Nodo implements Serializable{
     public void setSiguiente(Nodo siguiente) {
         this.siguiente = siguiente;
     }
-    
+    public Nodo getAnterior() {
+        return anterior;
+    }
+
+    public void setAnterior(Nodo anterior) {
+        this.anterior = anterior;
+    }
 }

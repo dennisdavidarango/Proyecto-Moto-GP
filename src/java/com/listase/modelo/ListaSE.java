@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class ListaSE implements Serializable{
     private Nodo cabeza;
-
+  
     public ListaSE() {
     }
 
@@ -275,5 +275,32 @@ es el código a eliminar digo que cabeza=cabeza.siguiente si,no llamó al ayudan
 
         }
         throw new CorredorExcepcion("La lista de infantes está vacía");
-    }  
+    }
+        public void adicionarNodoPosicion(int posicion, Corredores dato) throws CorredorExcepcion {
+        if (cabeza != null) {
+            if (posicion == 1) {
+                adicionarNodoAlInicio(dato);               
+            } else {
+                int cont = 1;
+                Nodo temp = cabeza;
+                while (temp != null) {
+                    if ((posicion - 1) == cont) {
+                        Nodo nodoInsertar = new Nodo(dato);
+                        nodoInsertar.setSiguiente(temp.getSiguiente());
+                        temp.setSiguiente(nodoInsertar);
+                        if(nodoInsertar.getSiguiente()!=null)
+                            nodoInsertar.getSiguiente().setAnterior(nodoInsertar);
+                        nodoInsertar.setAnterior(temp);
+                        break ;
+                    }
+                    temp = temp.getSiguiente();
+                    cont++;
+                }
+            }
+        }
+        else{
+            throw new CorredorExcepcion(("La lista está vacía"));
+        }
+    }   
+       
 }

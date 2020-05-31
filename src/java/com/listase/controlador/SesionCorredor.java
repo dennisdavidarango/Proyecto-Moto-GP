@@ -479,4 +479,50 @@ public class SesionCorredor implements Serializable {
             JsfUtil.addErrorMessage(ex.getMessage());
         }
     }
+     public void cambiarPosicion()
+    {
+        boolean bandera=false;
+        int posicionFinal=0;
+        switch(opcionElegida)
+        {
+            //Ganar
+            case "1":
+                if(numeroPosiciones <= (posicionCorredor-1) )
+                {
+                    bandera=true;
+                    posicionFinal = posicionCorredor - numeroPosiciones;
+                }
+                break;
+            //Perder
+            case "0":
+                if(numeroPosiciones <= (listaCorredores.contarNodos()-posicionCorredor))
+                {
+                    bandera=true;
+                    posicionFinal = posicionCorredor + numeroPosiciones;
+                }
+                break;
+        }
+        
+        if(bandera)
+        {
+            try {
+                //Realizaria la función de insertar
+                Corredores datosInfante = listaCorredores.obtenerCorredor(corredorSeleccionado);
+                // cambia la cantidad de infantes
+                listaCorredores.eliminarCorredor(corredorSeleccionado);
+                listaCorredores.adicionarNodoPosicion(posicionFinal, datosInfante);
+                irPrimero();
+                JsfUtil.addSuccessMessage("Se ha realizado el cambio");
+                
+                
+            } catch (CorredorExcepcion ex) {
+               JsfUtil.addErrorMessage(ex.getMessage());
+            }
+            
+        }
+        else
+        {
+            JsfUtil.addErrorMessage("El número de posiciones no es válido para el infante dado");
+        }
+    }   
 }
