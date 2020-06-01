@@ -6,34 +6,27 @@
 package com.pirinola.modelo;
 
 import com.listaenlazada.modelo.Corredores;
+import java.io.Serializable;
 
 /**
  *
  * @author JULIMEL
  */
-public class NodoPirinola {
+public class NodoPirinola implements Serializable {
     
-    private DatoPirinola dato;
+    private Jugador dato;
     private NodoPirinola siguiente;
     private NodoPirinola anterior;
 
-    public NodoPirinola(DatoPirinola dato, NodoPirinola siguiente, NodoPirinola anterior) {
+    public NodoPirinola(Jugador dato) {
         this.dato = dato;
-        this.siguiente = siguiente;
-        this.anterior = anterior;
     }
 
-    NodoPirinola(Corredores corredor) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    
-    
-    public DatoPirinola getDato() {
+    public Jugador getDato() {
         return dato;
     }
 
-    public void setDato(DatoPirinola dato) {
+    public void setDato(Jugador dato) {
         this.dato = dato;
     }
 

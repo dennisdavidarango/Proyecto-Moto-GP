@@ -11,7 +11,10 @@ import com.listacircularde.modelo.ListaCircularDE;
 import com.listaenlazada.controlador.CorredoresFacade;
 import com.listaenlazada.controlador.util.JsfUtil;
 import com.listaenlazada.modelo.Corredores;
+import com.listase.modelo.ListaDE;
 import com.listase.modelo.NodoDE;
+import com.pirinola.modelo.ListaCircularPirinola;
+import com.pirinola.modelo.NodoPirinola;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -31,7 +34,7 @@ public class AppBean {
     
     private String correoTurno="prueba@prueba.com";
     private int cont=0;
-    
+    private ListaCircularPirinola listaCorredores;
      private List<Corredores> listadoCorredores;
     @EJB
     private CorredoresFacade connCorredor;
@@ -90,7 +93,6 @@ public class AppBean {
             model.connect(new Connection(elementF.getEndPoints().get(0), elementE.getEndPoints().get(0)));        
             model.connect(new Connection(elementF.getEndPoints().get(0), elementD.getEndPoints().get(0)));
        
-            
             listadoCorredores = connCorredor.findAll();
             listaCircularCorredores = new ListaCircularDE();
             //recorrer el listado y envio el infante a laista SE
