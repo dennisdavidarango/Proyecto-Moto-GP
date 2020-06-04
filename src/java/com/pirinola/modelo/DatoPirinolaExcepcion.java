@@ -9,10 +9,9 @@ package com.pirinola.modelo;
  *
  * @author JULIMEL
  */
-class JugadorExcepcion extends Exception {
+public class DatoPirinolaExcepcion extends Exception {
 
-    JugadorExcepcion(String string) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public DatoPirinolaExcepcion(String string) {
     }
     
 }

@@ -27,10 +27,19 @@
                      background-color: red;
                      color: #ffffff;
                 }
+                .ui-diagram-element-boolean {   
+                width:8em; 
+                height:3em;     
+                line-height:3em;
+                text-align: center;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+                border-radius: 4px;
+                border: 1px solid transparent;
+                background-color: red;
+                color: red;
+            }
 
             </style>
- 
- 
    
         </ui:define>
     <ui:define name="body">
@@ -81,12 +90,12 @@
                     <p:commandButton value="Parar" disabled="#{appBean.verInicio}"
                                      action="#{appBean.controlarCiclo()}" update="panelBotones,panelTingo"/>
                     
-                     <p:commandButton  value="Girar Pirinola" update="panelBotones,panelTingo" />
+                    <p:commandButton  value="Girar Pirinola" update="panelPirinola" disabled="#{!appBean.verInicio}" 
+                                      action="#{appBean.controlarCiclo()}"/>
                      
                       <p:commandButton  value="Parar Pirinola" update="panelBotones,panelTingo" />
                       
                 </h:panelGroup>
-
                 <p:panel header="Jugador Seleccionado">
                     <p:panelGrid columns="2" id="panelDatos">
                         <p:outputLabel value="Código"/>
@@ -101,7 +110,7 @@
                         <p:outputLabel value="#{appBean.corredorSeleccionado.ciudadNacimiento}"/>
                     </p:panelGrid>
                 </p:panel>
-                <h:panelGroup>
+                <h:panelGroup id="panelPirinola">
                 <p:diagram value="#{appBean.model}" style="height:400px" styleClass="ui-widget-content" />
                 </h:panelGroup>
             </h:form>

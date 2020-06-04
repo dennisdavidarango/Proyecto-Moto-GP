@@ -187,14 +187,14 @@
                                     update="panelCorredor"                                    
                                     oncomplete="PF('dlgDatosCorredor').show();" />
                         <p:menuitem value="Eliminar" update="panelEliminarCorredor"                                    
-                                    action="#{sesionCorredor.obtenerCorredorDiagrama()}"
+                                    action="#{sesionCorredor.eliminarCorredor()}"
                                     oncomplete="PF('dlgEliminarCorredor').show();"/>
                         <p:menuitem value="Enviar al final" update="pnlVista"                                    
                                     action="#{sesionCorredor.enviarAlFinal()}"/>
                         <p:menuitem value="Enviar al inicio" update="pnlVista"                                    
                                     action="#{sesionCorredor.enviarAlInicio()}"/>
                         <p:menuitem value="Adelantar/Perder Posición"
-                                    action="#{sesionCorredor.obtenerPosicionCorredor()}"
+                                    action="#{sesionCorredor.cambiarPosicion()}"
                                     update="panelGestionPosicion"                                    
                                     oncomplete="PF('dlgGestionPosicionCorredor').show();"/>
                     </p:contextMenu>

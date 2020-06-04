@@ -131,15 +131,12 @@
                             <p:outputLabel value="#{sesionCorredor.listaCorredor.contarCorredoresxGenero(false)}"/>
                         </h:panelGrid>
                     </p:panel>
-
-
                 </p:panelGrid>
-
                 <p:panel header="Gráfico" id="pnlVista" style="width: 100%;">
                     <p:commandButton value="#{sesionCorredor.textoVista}" 
                                      action="#{sesionCorredor.cambiarVistaCorredor()}"
                                      update="pnlVista"/>
-
+                    
                     <p:dataTable rendered="#{sesionCorredor.textoVista=='Gráfico'}"  value="#{sesionCorredor.listadoCorredor}" var="inf">
                         <p:column>
                             <f:facet name="header">

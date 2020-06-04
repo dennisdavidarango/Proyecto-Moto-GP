@@ -5,7 +5,6 @@
  */
 package com.pirinola.modelo;
 
-import com.listaenlazada.modelo.Corredores;
 import java.io.Serializable;
 
 /**
@@ -14,19 +13,19 @@ import java.io.Serializable;
  */
 public class NodoPirinola implements Serializable {
     
-    private Jugador dato;
+    private DatoPirinola dato;
     private NodoPirinola siguiente;
     private NodoPirinola anterior;
 
-    public NodoPirinola(Jugador dato) {
+    public NodoPirinola(DatoPirinola dato) {
         this.dato = dato;
     }
 
-    public Jugador getDato() {
+    public DatoPirinola getDato() {
         return dato;
     }
 
-    public void setDato(Jugador dato) {
+    public void setDato(DatoPirinola dato) {
         this.dato = dato;
     }
 

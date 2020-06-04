@@ -5,8 +5,6 @@
  */
 package com.pirinola.modelo;
 
-import com.listaenlazada.modelo.Corredores;
-import com.listase.excepciones.CorredorExcepcion;
 import java.io.Serializable;
 
 /**
@@ -24,9 +22,9 @@ public class ListaCircularPirinola implements Serializable{
         this.cabeza = cabeza;
     }
 
-    public void adicionarNodo(Jugador jugador) {
+    public void adicionarNodo(DatoPirinola dato) {
         if (cabeza == null) {
-            cabeza = new NodoPirinola(jugador);
+            cabeza = new NodoPirinola(dato);
             ///Hago los enlaces circulares
             cabeza.setSiguiente(cabeza);
             cabeza.setAnterior(cabeza);
@@ -35,7 +33,7 @@ public class ListaCircularPirinola implements Serializable{
             //Lamo a mi ayudante
            NodoPirinola temp= cabeza.getAnterior();
            //temp= temp.getAnterior();
-           NodoPirinola nodoInsertar = new NodoPirinola(jugador);
+           NodoPirinola nodoInsertar = new NodoPirinola(dato);
            temp.setSiguiente(nodoInsertar);
            nodoInsertar.setAnterior(temp);           
            nodoInsertar.setSiguiente(cabeza);
@@ -43,16 +41,16 @@ public class ListaCircularPirinola implements Serializable{
         }
     }
     
-    public void adicionarNodoAlInicio(Jugador jugador) {
+    public void adicionarNodoAlInicio(DatoPirinola dato) {
         if (cabeza == null) {
-             cabeza = new NodoPirinola(jugador);
+             cabeza = new NodoPirinola(dato);
             ///Hago los enlaces circulares
             cabeza.setSiguiente(cabeza);
             cabeza.setAnterior(cabeza);
         } else {
             NodoPirinola temp= cabeza.getAnterior();
            //temp= temp.getAnterior();
-           NodoPirinola nodoInsertar = new NodoPirinola(jugador);
+           NodoPirinola nodoInsertar = new NodoPirinola(dato);
            temp.setSiguiente(nodoInsertar);
            nodoInsertar.setAnterior(temp);           
            nodoInsertar.setSiguiente(cabeza);
@@ -81,7 +79,7 @@ public class ListaCircularPirinola implements Serializable{
         }
     }
     
-    public String listarJugadores(String listado) throws JugadorExcepcion
+    public String listarJugadores(String listado) throws DatoPirinolaExcepcion
      {
         if (cabeza != null) {
             NodoPirinola temp = cabeza;
@@ -98,30 +96,6 @@ public class ListaCircularPirinola implements Serializable{
 
             return listado;
         }
-        throw new JugadorExcepcion(("No existen Corredores en la lista"));
-    }
-     public void eliminarNodo(String nombre) throws JugadorExcepcion {
-        if (cabeza != null) {
-            if (cabeza.getSiguiente() == cabeza) {
-                if (cabeza.getDato().getNombre().equals(nombre)) {
-                    cabeza = null;
-                    return;
-                }
-            } else {
-                NodoPirinola temp = cabeza;
-                do {
-                    if (temp.getDato().getNombre().equals(nombre)) {
-                        //estamos parados en el que hay que eliminar
-                        temp.getAnterior().setSiguiente(temp.getSiguiente());
-                        temp.getSiguiente().setAnterior(temp.getAnterior());
-                        return;
-                    }
-                    temp = temp.getSiguiente();
-                } while (temp != cabeza);
-            }
-            throw new JugadorExcepcion(("El Jugador no se encuentra en la lista"));
-        } else {
-            throw new JugadorExcepcion(("No existen jugadors en la lista"));
-        }
+        throw new DatoPirinolaExcepcion(("No existen Corredores en la lista"));
     }
 }

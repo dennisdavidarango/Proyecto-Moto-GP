@@ -417,7 +417,7 @@ public class SesionCorredor implements Serializable {
                 //Eliminamos de bds
                 
                 irPrimero();
-                JsfUtil.addSuccessMessage("Infante "+codigoEliminar +" eliminado.");
+                JsfUtil.addSuccessMessage("Corredor"+ codigoEliminar +" eliminado.");
             }
             catch(CorredorExcepcion e)
             {

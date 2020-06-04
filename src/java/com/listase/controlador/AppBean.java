@@ -12,7 +12,10 @@ import com.listaenlazada.controlador.CorredoresFacade;
 import com.listaenlazada.controlador.util.JsfUtil;
 import com.listaenlazada.modelo.Corredores;
 import com.listase.modelo.ListaDE;
+import com.listase.modelo.Nodo;
 import com.listase.modelo.NodoDE;
+import com.pirinola.modelo.DatoPirinola;
+import com.pirinola.modelo.DatoPirinolaExcepcion;
 import com.pirinola.modelo.ListaCircularPirinola;
 import com.pirinola.modelo.NodoPirinola;
 import java.util.List;
@@ -22,6 +25,8 @@ import org.primefaces.model.diagram.Connection;
 import org.primefaces.model.diagram.DefaultDiagramModel;
 import org.primefaces.model.diagram.DiagramModel;
 import org.primefaces.model.diagram.Element;
+import org.primefaces.model.diagram.connector.StateMachineConnector;
+import org.primefaces.model.diagram.endpoint.BlankEndPoint;
 import org.primefaces.model.diagram.endpoint.DotEndPoint;
 import org.primefaces.model.diagram.endpoint.EndPointAnchor;
 /**
@@ -45,9 +50,13 @@ public class AppBean {
     
     private ListaCircularDE listaCircularCorredores;
     
-    private NodoDE ayudante;
+    private NodoDE ayudante1;
+    
+    private NodoPirinola ayudante;
     
     private boolean verInicio=true;
+    
+    private NodoPirinola cabeza;
     /**
      * Creates a new instance of AppBean
      */
@@ -101,8 +110,8 @@ public class AppBean {
                 listaCircularCorredores.adicionarNodo(inf);
             }
         
-            ayudante = listaCircularCorredores.getCabeza();
-            corredorSeleccionado = ayudante.getDato();       
+            ayudante1 = listaCircularCorredores.getCabeza();
+            corredorSeleccionado = ayudante1.getDato();       
     }
     
     
@@ -163,22 +172,62 @@ public class AppBean {
     public void setCorreoTurno(String correoTurno) {
         this.correoTurno = correoTurno;
     }
+   
     
-    
-      public void pasarTingo()
-    {        
-       if(!verInicio)
-       {
-            ayudante = ayudante.getSiguiente();
-            corredorSeleccionado = ayudante.getDato();
-           // for(Element ele:model.)
-           // {
-            
-           // }
-       }
-       
+      public void pasarTingo(){
+          
+        if(!verInicio)
+         {
+              ayudante1 = ayudante1.getSiguiente();
+              corredorSeleccionado = ayudante1.getDato();
+          }
+         }
+      
+      
+      
+      
+       public void pintarLista() {
+        //Instancia el modelo
+        model = new DefaultDiagramModel();
+        //Se establece para que el diagrama pueda tener infinitas flechas
+        model.setMaxConnections(-1);
+
+        StateMachineConnector connector = new StateMachineConnector();
+        connector.setOrientation(StateMachineConnector.Orientation.ANTICLOCKWISE);
+        connector.setPaintStyle("{strokeStyle:'#3399ff',lineWidth:2}");
+        model.setDefaultConnector(connector);
+
+        ///Adicionar los elementos
+        if (listaCorredores.getCabeza() != null) {
+            //llamo a mi ayudante
+            NodoPirinola temp = listaCorredores.getCabeza();
+            int posX=2;
+            int posY=2;
+            //recorro la lista de principio a fin
+            while(temp !=null)
+            {
+                //Parado en un elemento
+                //Crea el cuadrito y lo adiciona al modelo
+                Element ele = new Element(temp.getDato().getTexto()+" "+
+                        temp.getDato().getCantidad(), 
+                        posX+"em", posY+"em");
+                ele.setId(String.valueOf(temp.getDato().getTexto()));
+                //adiciona un conector al cuadrito
+                if(!temp.getDato().getVerdad())
+                {
+                     ele.setStyleClass("ui-diagram-element-boolean");
+                }
+               
+                ele.addEndPoint(new BlankEndPoint(EndPointAnchor.TOP));
+                ele.addEndPoint(new BlankEndPoint(EndPointAnchor.BOTTOM_RIGHT));
+                model.addElement(ele);                    
+                temp=temp.getSiguiente();
+                posX=  posX+5;
+                posY= posY+6;
+            }            
+        }
     }
-    
+      
     public void aumentarContador(String correo)
     {
         switch(correo)
@@ -204,7 +253,41 @@ public class AppBean {
     
     public void controlarCiclo()
     {
+        
+        Corredores inf1 = new Corredores();
+        Element element = new Element(inf1.getCodigo()+" "+
+                                  inf1.getNombre());
         //False fue por que va a parar
+        if(!verInicio)
+        {
+            //Eliminaría el niño . Valido lo seleccionado
+            for(Corredores inf: listadoCorredores)
+            {
+                Element ele = new Element(inf.getCodigo()+" "+
+                        inf.getNombre());
+                if(inf.getCodigo() == corredorSeleccionado.getCodigo())
+             
+                    listadoCorredores.remove(inf);
+                    break;
+             }
+            if(inf1.getGenero())
+                {
+                     element.setStyleClass("ui-diagram-element-boolean");
+                
+                }
+        }    
+            
+            if(listadoCorredores.size()==1)
+            {
+                JsfUtil.addSuccessMessage("Ha ganado "+listadoCorredores.get(0));
+            }
+            
+            verInicio = !verInicio;
+        } 
+    
+      public void controlarCicloPirinola(){
+          
+          //False fue por que va a parar
         if(!verInicio)
         {
             //Eliminaría el niño . Valido lo seleccionado
@@ -223,8 +306,89 @@ public class AppBean {
             }
             
             verInicio = !verInicio;
-        }    
-       
+      
+      }
+    
+    
+    
+      
+public void adicionarNodo(DatoPirinola dato) {
+        if (cabeza == null) {
+            cabeza = new NodoPirinola(dato);
+            ///Hago los enlaces circulares
+            cabeza.setSiguiente(cabeza);
+            cabeza.setAnterior(cabeza);
+            
+        } else {
+            //Lamo a mi ayudante
+           NodoPirinola temp= cabeza.getAnterior();
+           //temp= temp.getAnterior();
+           NodoPirinola nodoInsertar = new NodoPirinola(dato);
+           temp.setSiguiente(nodoInsertar);
+           nodoInsertar.setAnterior(temp);           
+           nodoInsertar.setSiguiente(cabeza);
+           cabeza.setAnterior(nodoInsertar);
+        }
     }
+     
+    public void adicionarNodoAlInicio(DatoPirinola dato) {
+        if (cabeza == null) {
+             cabeza = new NodoPirinola(dato);
+            ///Hago los enlaces circulares
+            cabeza.setSiguiente(cabeza);
+            cabeza.setAnterior(cabeza);
+        } else {
+            NodoPirinola temp= cabeza.getAnterior();
+           //temp= temp.getAnterior();
+           NodoPirinola nodoInsertar = new NodoPirinola(dato);
+           temp.setSiguiente(nodoInsertar);
+           nodoInsertar.setAnterior(temp);           
+           nodoInsertar.setSiguiente(cabeza);
+           cabeza.setAnterior(nodoInsertar);
+           cabeza = cabeza.getAnterior();
+        }
+    }
+    
+    public short contarNodos()
+    {
+        if(cabeza ==null)
+        {
+            return 0;
+        }
+        else
+        {
+            //llamar a mi ayudante
+            NodoPirinola temp= cabeza;
+            short cont=1;
+            while(temp.getSiguiente()!=cabeza)
+            {
+                temp=temp.getSiguiente();
+                cont++;
+            }
+            return cont;
+        }
+    }
+    
+    
+     public String listarInfantes(String listado) throws DatoPirinolaExcepcion
+     {
+        if (cabeza != null) {
+            NodoPirinola temp = cabeza;
+            do
+            {
+                listado += temp.getDato() + "\n";
+                temp = temp.getSiguiente();
+            }while(temp != cabeza);
+
+            return listado;
+        }
+        throw new DatoPirinolaExcepcion(("No existen Corredores en la lista"));
+    }
+    
+    //Eliminar NOdo
+
+}
+
+  
     
 
